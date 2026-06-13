@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0A1A2F">
+    <title>Empréstimo Financeiro - Visual Distintivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <!-- Header simples -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo">Empréstimo<span class="logo-accent">Fi</span></a>
+            <button class="menu-toggle" aria-label="Abrir menu" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <nav id="mobile-menu" class="mobile-menu">
+            <button class="mobile-menu-close" aria-label="Fechar menu">
+                <span>&times;</span>
+            </button>
+            <div class="mobile-menu-content">
+                <ul class="mobile-menu-list">
+                    <li><a href="#beneficios" class="mobile-menu-link">Benefícios</a></li>
+                    <li><a href="#simulador" class="mobile-menu-link">Simular</a></li>
+                    <li><a href="#depoimentos" class="mobile-menu-link">Depoimentos</a></li>
+                    <li><a href="#cta-final" class="mobile-menu-link">Simular</a></li>
+                </ul>
+            </div>
+        </nav>
+     </header>
+     
+     <main id="main-content">
+     
+     <!-- Hero - Conceito 1: Fluxo Vertical com Interrupções Tipográficas -->
+    <section class="hero">
+        <div class="container hero-content">
+            <!-- Conteúdo textual (60% largura esquerda) -->
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    Transforme seu plano em realidade
+                </h1>
+                <p class="hero-subtitle">
+                    Taxas justas, aprovação ágil e acompanhamento personalizado para seus projetos mais importantes.
+                </p>
+                <a href="#beneficios" class="cta-button">Como funciona</a>
+            </div>
+            
+            <!-- Ilustração abstrata (lado direito, fluxo vertical) -->
+            <div class="hero-illustration">
+                <svg width="300" height="500" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Linha principal que "sai" do título e flui verticalmente -->
+                    <path d="M50,50 
+                             C100,100 150,150 200,200
+                             C250,250 250,300 250,350
+                             C250,400 200,450 150,480
+                             C100,510 50,500 50,480"
+                          fill="none"
+                          stroke="#0A1A2F"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round">
+                        <animate attributeName="stroke-dasharray" 
+                                 values="0 200;200 0" 
+                                 dur="2s" 
+                                 repeatCount="indefinite"/>
+                    </path>
+                    
+                    <!-- Pontos de conexão (nós) -->
+                    <circle cx="100" cy="100" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="150" cy="150" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="200" cy="200" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="250" cy="250" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="250" cy="300" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="250" cy="350" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="200" cy="400" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="150" cy="450" r="4" fill="#2ECC71" opacity="0.15"/>
+                    <circle cx="100" cy="480" r="4" fill="#2ECC71" opacity="0.15"/>
+                    
+                    <!-- Elementos orgânicos adicionais -->
+                    <path d="M180,220 
+                             C190,240 210,240 220,220"
+                          fill="none"
+                          stroke="#0A1A2F"
+                          stroke-width="1"
+                          opacity="0.6"/>
+                          
+                    <path d="M120,380 
+                             C110,400 90,400 80,380"
+                          fill="none"
+                          stroke="#0A1A2F"
+                          stroke-width="1"
+                          opacity="0.6"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Benefícios (grade assimétrica) -->
+    <section id="beneficios" class="beneficios">
+        <div class="container">
+            <h2 class="section-title">Por que escolher nós</h2>
+            <div class="beneficios-grid">
+                <!-- Card grande central (sobrepondo ligeiramente) -->
+                <div class="benefit-card benefit-card--large">
+                    <div class="benefit-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20,5 
+                                     L30,20 
+                                     L20,35 
+                                     L10,20 
+                                     Z"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="2"/>
+                            <circle cx="20" cy="20" r="6" fill="#2ECC71" opacity="0.2"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Proteção Completa</h3>
+                    <p class="benefit-text">
+                        Seu patrimônio está seguro com nossas garantias sólidas e processos transparentes.
+                    </p>
+                </div>
+                
+                <!-- Card esquerdo superior -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10,10 
+                                     Q20,5 30,10 
+                                     Q35,15 35,25 
+                                     Q30,30 20,30 
+                                     Q10,30 10,20 
+                                     Q10,10 10,10 Z"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1.5"/>
+                            <circle cx="20" cy="20" r="3" fill="#2ECC71"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Taxas Transparentes</h3>
+                    <p class="benefit-text">
+                        Sem surpresas: todas as taxas são explicadas claramente desde o início.
+                    </p>
+                </div>
+                
+                <!-- Card direito superior -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5,20 
+                                     L15,10 
+                                     L25,10 
+                                     L35,20 
+                                     L25,30 
+                                     L15,30 
+                                     Z"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1.5"/>
+                            <path d="M20,10 
+                                     L20,30"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1"
+                                  opacity="0.5"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Aprovação Ágil</h3>
+                    <p class="benefit-text">
+                        Processo simplificado com resposta em até 24 horas úteis.
+                    </p>
+                </div>
+                
+                <!-- Card esquerdo inferior -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20,5 
+                                     L25,20 
+                                     L40,20 
+                                     L25,35 
+                                     L20,50 
+                                     L15,35 
+                                     L0,20 
+                                     L15,20 
+                                     Z"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1.5"/>
+                            <circle cx="20" cy="25" r="3" fill="#2ECC71"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Atendimento Personalizado</h3>
+                    <p class="benefit-text">
+                        Consultores dedicados que entendem suas necessidades específicas.
+                    </p>
+                </div>
+                
+                <!-- Card direito inferior -->
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10,30 
+                                     Q20,10 30,30 
+                                     Q35,35 30,40 
+                                     Q25,35 20,30 
+                                     Q15,35 10,40 
+                                     Q5,35 10,30 Z"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1.5"/>
+                            <circle cx="20" cy="25" r="4" fill="#2ECC71" opacity="0.3"/>
+                        </svg>
+                    </div>
+                    <h3 class="benefit-title">Flexibilidade de Pagamento</h3>
+                    <p class="benefit-text">
+                        Escolha o plano que cabe no seu orçamento sem comprometer seus objetivos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Simulador -->
+    <section id="simulador" class="simulador">
+        <div class="container">
+            <h2 class="section-title">Simule seu empréstimo</h2>
+            <p class="simulador-subtitle">Descubra as melhores condições para o seu perfil em segundos.</p>
+            
+            <div class="simulador-form">
+                <!-- Valor do Empréstimo -->
+                <div class="form-group">
+                    <label for="valor-emprestimo">Valor do empréstimo (R$)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="valor-emprestimo" min="500" max="50000" step="50" value="5000">
+                        <span class="input-suffix">R$</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="valor-slider" min="500" max="50000" step="50" value="5000">
+                        <div class="slider-labels">
+                            <span>R$500</span>
+                            <span>R$50.000</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Prazo -->
+                <div class="form-group">
+                    <label for="prazo-meses">Prazo (meses)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="prazo-meses" min="3" max="24" step="1" value="12">
+                        <span class="input-suffix">meses</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="prazo-slider" min="3" max="24" step="1" value="12">
+                        <div class="slider-labels">
+                            <span>3</span>
+                            <span>24</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- CPF para Pré-aprovação -->
+                <div class="form-group cpf-group">
+                    <label for="cpf">CPF (opcional, para ver sua pré-aprovação)</label>
+                    <input type="text" id="cpf" maxlength="11" placeholder="Digite apenas os números">
+                    <small>Usamos apenas para consultar sua renda estimada e não armazenamos seus dados.</small>
+                </div>
+                
+                <!-- Botão Calcular -->
+                <button type="button" id="calcular-btn" class="cta-button cta-button--primary">Calcular</button>
+            </div>
+            
+            <!-- Resultados (inicialmente oculto) -->
+            <div id="resultado-simulador" class="simulador-resultado" style="display: none;">
+                <h3>Resultado da simulação</h3>
+                <div class="resultado-grid">
+                    <div class="resultado-item">
+                        <h4>Parcela mensal</h4>
+                        <p class="valor-destaque">R$ <span id="parcela-valor">0,00</span></p>
+                    </div>
+                    <div class="resultado-item">
+                        <h4>Total a pagar</h4>
+                        <p class="valor-destaque">R$ <span id="total-valor">0,00</span></p>
+                    </div>
+                    <div class="resultado-item">
+                        <h4>Total de juros</h4>
+                        <p class="valor-destaque">R$ <span id="juros-valor">0,00</span></p>
+                    </div>
+                    <div class="resultado-item">
+                        <h4>Taxa Pix</h4>
+                        <p class="valor-destaque">R$ 29,90</p>
+                    </div>
+                </div>
+                
+                <!-- Seção de Score (mostrada apenas se API retornar dados) -->
+                <div id="score-section" class="score-section" style="display: none;">
+                    <h4>Sua pré-aprovação</h>
+                    <p id="score-texto">Com base na sua renda informada, temos uma proposta especial para você.</p>
+                    <div class="score-details">
+                        <span id="renda-label">Renda: </span>
+                        <span id="renda-valor">R$ 0,00</span>
+                        <span id="score-label"> | Score: </span>
+                        <span id="score-valor">0</span>
+                    </div>
+                </div>
+                
+                <!-- Observações Importantes -->
+                <div class="observacoes">
+                    <p><strong>Observações importantes:</strong></p>
+                    <ul>
+                        <li>O valor das parcelas é fixo durante todo o contrato.</li>
+                        <li>A taxa de Pix de R$ 29,90 é cobrada apenas uma vez, na primeira parcela.</li>
+                        <li>O seguro prestamista somente é incluído se solicitado e aprovado, e seu pagamento deve ser realizado via Pix na mesma conta que receberá o empréstimo.</li>
+                        <li>Esta é uma simulação sem compromisso. A aprovação final está sujeita à análise de crédito.</li>
+                    </ul>
+                </div>
+                
+                <!-- Botão Continuar -->
+                <button type="button" id="prosseguir-btn" class="cta-button">Continuar para cadastro</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seção de Depoimentos (integrados como elementos de fluxo) -->
+    <section id="depoimentos" class="depoimentos">
+        <div class="container">
+            <div class="testimonial-flow">
+                <!-- Depoimento 1 -->
+                <blockquote class="testimonial">
+                    <p class="testimonial-text">
+                        "Finalmente encontrei uma financeira que entende minhas necessidades. O processo foi transparente desde o início e as condições foram exatamente como prometido."
+                    </p>
+                    <cite class="testimonial-author">— Maria S., empresária</cite>
+                    <div class="testimonial-illustration">
+                        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20,20 
+                                     Q40,10 60,20 
+                                     Q70,30 70,50 
+                                     Q60,70 40,60 
+                                     Q20,70 10,50 
+                                     Q10,30 20,20 Z"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1.5"/>
+                            <circle cx="40" cy="40" r="12" fill="#E8E4D9"/>
+                            <path d="M30,40 
+                                     L50,40"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1"/>
+                            <path d="M40,30 
+                                     L40,50"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1"/>
+                        </svg>
+                    </div>
+                </blockquote>
+                
+                <!-- Depoimento 2 -->
+                <blockquote class="testimonial">
+                    <p class="testimonial-text">
+                        "As taxas foram claramente explicadas e não houve surpresas. Recomendo para quem busca segurança e transparência em operações de crédito."
+                    </p>
+                    <cite class="testimonial-author">— João P., desenvolvedor</cite>
+                    <div class="testimonial-illustration">
+                        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20,60 
+                                     L60,20 
+                                     L100,60"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="2"/>
+                            <path d="M40,40 
+                                     L80,40"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1"
+                                  opacity="0.7"/>
+                            <path d="M60,20 
+                                     L60,60"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1"
+                                  opacity="0.5"/>
+                            <circle cx="50" cy="40" r="6" fill="#2ECC71" opacity="0.2"/>
+                        </svg>
+                    </div>
+                </blockquote>
+                
+                <!-- Depoimento 3 -->
+                <blockquote class="testimonial">
+                    <p class="testimonial-text">
+                        "O atendimento personalizado fez toda a diferença. Meu consultor entendeu exatamente o que eu precisou e encontrou a melhor solução para meu caso específico."
+                    </p>
+                    <cite class="testimonial-author">— Ana T., professora</cite>
+                    <div class="testimonial-illustration">
+                        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg>
+                            <path d="M40,20 
+                                     Q20,40 40,60 
+                                     Q60,40 40,20 Z"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1.5"/>
+                            <circle cx="40" cy="40" r="10" fill="#E8E4D9"/>
+                            <path d="M30,40 
+                                     L50,40"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1"/>
+                            <path d="M40,30 
+                                     L40,50"
+                                  fill="none"
+                                  stroke="#0A1A2F"
+                                  stroke-width="1"/>
+                            <circle cx="35" cy="35" r="3" fill="#2ECC71"/>
+                            <circle cx="45" cy="45" r="3" fill="#2ECC71"/>
+                        </svg>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final Integrado -->
+    <section id="cta-final" class="cta-final">
+        <div class="container cta-content">
+            <h2 class="cta-title">Pronto para transformar seus planos em realidade?</h2>
+            <p class="cta-text">
+                Comece agora com uma simulação gratuita e descubra as melhores condições para seu perfil.
+            </p>
+            <a href="#como-funciona" class="cta-button cta-button--primary">Simule seu empréstimo</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p>&copy; 2026 Empréstimo Financeiro. Todos os direitos reservados.</p>
+            <div class="footer-links">
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Termos de Uso</a>
+                <a href="#">Contato</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuClose = document.querySelector('.mobile-menu-close');
+        const body = document.body;
+
+        menuToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            // Update aria-expanded attribute
+            const isExpanded = this.classList.contains('active');
+            this.setAttribute('aria-expanded', isExpanded);
+            // Lock body scroll when menu is open
+            body.style.overflow = isExpanded ? 'hidden' : '';
+        });
+
+        mobileMenuClose.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            body.style.overflow = '';
+        });
+
+        // Close mobile menu when clicking a link
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                menuToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                body.style.overflow = '';
+            });
+        });
+
+        // Close mobile menu with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                menuToggle.classList.remove('active');
+                mobileMenu.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                body.style.overflow = '';
+                menuToggle.focus(); // Return focus to menu toggle
+            }
+        });
+
+        // Header scroll effect
+        const header = document.querySelector('.header');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Simulador de Empréstimo
+        const valorInput = document.getElementById('valor-emprestimo');
+        const valorSlider = document.getElementById('valor-slider');
+        const prazoInput = document.getElementById('prazo-meses');
+        const prazoSlider = document.getElementById('prazo-slider');
+        const cpfInput = document.getElementById('cpf');
+        const calcularBtn = document.getElementById('calcular-btn');
+        const resultadoSimulador = document.getElementById('resultado-simulador');
+        const parcelaValor = document.getElementById('parcela-valor');
+        const totalValor = document.getElementById('total-valor');
+        const jurosValor = document.getElementById('juros-valor');
+        const scoreSection = document.getElementById('score-section');
+        const rendaValor = document.getElementById('renda-valor');
+        const scoreValor = document.getElementById('score-valor');
+        const scoreTexto = document.getElementById('score-texto');
+        const prosseguirBtn = document.getElementById('prosseguir-btn');
+
+        // Synchronize slider and input for loan amount
+        valorInput.addEventListener('input', function() {
+            valorSlider.value = this.value;
+        });
+        
+        valorSlider.addEventListener('input', function() {
+            valorInput.value = this.value;
+        });
+
+        // Synchronize slider and input for loan term
+        prazoInput.addEventListener('input', function() {
+            prazoSlider.value = this.value;
+        });
+        
+        prazoSlider.addEventListener('input', function() {
+            prazoInput.value = this.value;
+        });
+
+        // Mock API for CPF score/renda
+        function mockCpfApi(cpf) {
+            // Remove non-digits
+            cpf = cpf.replace(/\D/g, '');
+            
+            // Validate CPF length
+            if (cpf.length !== 11) {
+                return null;
+            }
+            
+            // Simple validation: not all digits the same
+            if (/^(\d)\1{10}$/.test(cpf)) {
+                return null;
+            }
+            
+            // Simulate network delay
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Mock response: sometimes return data, sometimes not (20% chance of no data)
+                    if (Math.random() > 0.2) {
+                        // Generate random renda between 1000 and 15000
+                        const renda = 1000 + Math.random() * 14000;
+                        // Calculate a mock score based on renda (simplified)
+                        let score = 300 + (renda - 1000) * 600 / 14000; // 300 to 900
+                        score = Math.min(900, Math.max(300, Math.round(score)));
+                        
+                        resolve({ 
+                            renda: renda, 
+                            score: score 
+                        });
+                    } else {
+                        resolve(null);
+                    }
+                }, 800); // 800ms delay to simulate API call
+            });
+        }
+
+        // Handle CPF input
+        cpfInput.addEventListener('input', function() {
+            // Format CPF as user types (optional)
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            
+            // Add formatting: XXX.XXX.XXX-XX
+            if (value.length > 0) {
+                const part1 = value.substring(0, 3);
+                const part2 = value.substring(3, 6);
+                const part3 = value.substring(6, 9);
+                const part4 = value.substring(9, 11);
+                
+                if (value.length > 9) {
+                    this.value = `${part1}.${part2}.${part3}-${part4}`;
+                } else if (value.length > 6) {
+                    this.value = `${part1}.${part2}.${part3}-${part4.substring(0, value.length - 9)}`;
+                } else if (value.length > 3) {
+                    this.value = `${part1}.${part2}.${part3.substring(0, value.length - 3)}`;
+                } else {
+                    this.value = part1;
+                }
+            } else {
+                this.value = '';
+            }
+            
+            // If we have 11 digits (unformatted), check API
+            const cleanCpf = this.value.replace(/\D/g, '');
+            if (cleanCpf.length === 11) {
+                mockCpfApi(cleanCpf).then(data => {
+                    if (data) {
+                        rendaValor.textContent = `R$ ${data.renda.toFixed(2)}`;
+                        scoreValor.textContent = data.score;
+                        scoreSection.style.display = 'block';
+                        scoreTexto.textContent = "Parabéns! Você tem uma pré-aprovação especial.";
+                    } else {
+                        scoreSection.style.display = 'none';
+                    }
+                });
+            } else {
+                scoreSection.style.display = 'none';
+            }
+        });
+
+        // Calculate loan payment
+        function calcularParcela(valor, prazoMensal, taxaMensal) {
+            // Formula: P = (r * PV) / (1 - (1 + r)^-n)
+            const r = taxaMensal;
+            const n = prazoMensal;
+            if (r === 0) {
+                return valor / n;
+            }
+            return (r * valor) / (1 - Math.pow(1 + r, -n));
+        }
+
+        // Handle calculate button
+        calcularBtn.addEventListener('click', function() {
+            const valor = parseFloat(valorInput.value);
+            const prazo = parseInt(prazoInput.value);
+            
+            if (isNaN(valor) || valor < 500 || valor > 50000) {
+                alert('Por favor, insira um valor entre R$ 500 e R$ 50.000');
+                return;
+            }
+            
+            if (isNaN(prazo) || prazo < 3 || prazo > 24) {
+                alert('Por favor, insira um prazo entre 3 e 24 meses');
+                return;
+            }
+            
+            // Fixed interest rate for simulation (can be made dynamic based on score later)
+            const taxaMensal = 0.0199; // 1.99% ao mês
+            
+            // Calculate payment
+            const parcela = calcularParcela(valor, prazo, taxaMensal);
+            const totalParcelas = parcela * prazo;
+            const totalJuros = totalParcelas - valor;
+            const taxaPix = 29.90;
+            const totalAPagar = totalParcelas + taxaPix;
+            
+            // Update display (format to Brazilian currency)
+            parcelaValor.textContent = parcela.toFixed(2).replace('.', ',');
+            totalValor.textContent = totalAPagar.toFixed(2).replace('.', ',');
+            jurosValor.textContent = totalJuros.toFixed(2).replace('.', ','); // Apenas juros do empréstimo
+            
+            // Show results
+            resultadoSimulador.style.display = 'block';
+            
+            // Scroll to results
+            resultadoSimulador.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+
+        // Handle proceed button
+        prosseguirBtn.addEventListener('click', function() {
+            // In a real application, this would navigate to a registration form
+            // pre-filled with the simulation values
+            alert('Próximo passo: Redirecionando para o cadastro com os valores da simulação pré-preenchidos!\n\nValor: R$ ' + valorInput.value + '\nPrazo: ' + prazoInput.value + ' meses');
+            // For now, just show an alert
+            // In reality, you might scroll to a registration section or show a modal
+        });
+    </script>
+    
+    </main>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Proposta - FinanFlex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">Finan<span>Flex</span></a>
+      <button class="navbar-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <ul class="navbar-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="simulador.html">Simular</a></li>
+        <li><a href="cadastro.html">Cadastro</a></li>
+        <li><a href="quem-somos.html">Quem Somos</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="login-cliente.html">Minha Conta</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>Minha Proposta</h1>
+      <p>Acompanhe o status da sua solicitação de empréstimo.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:720px">
+      <div id="propostaStatus" style="display:none">
+        <div class="card card-lg" style="text-align:center">
+          <div style="font-size:3rem;margin-bottom:16px" id="statusEmoji">⏳</div>
+          <h3 style="font-family:var(--font-display);font-size:1.5rem;color:var(--text-dark);margin-bottom:8px" id="statusTitle">Proposta enviada!</h3>
+          <p style="color:var(--text-muted);margin-bottom:24px" id="statusMessage">Sua solicitação foi recebida e está em análise.</p>
+          <div style="display:flex;justify-content:center;gap:8px;margin-bottom:32px">
+            <span class="step-dot done"></span>
+            <span class="step-dot active"></span>
+            <span class="step-dot"></span>
+            <span class="step-dot"></span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left;max-width:400px;margin:0 auto" id="propostaDetalhes"></div>
+        </div>
+      </div>
+
+      <div id="propostaForm">
+        <div class="card card-lg">
+          <h3 style="font-family:var(--font-display);font-size:1.4rem;color:var(--text-dark);margin-bottom:24px">Solicitar Empréstimo</h3>
+          <div id="propostaFeedback"></div>
+          <div class="form-group">
+            <label for="propClienteCPF">CPF do cliente</label>
+            <input type="text" id="propClienteCPF" class="form-control" placeholder="000.000.000-00" maxlength="14">
+          </div>
+          <div id="propClienteInfo" style="display:none;padding:16px;background:var(--teal-light);border-radius:var(--radius-sm);margin-bottom:16px"></div>
+          <div class="form-group">
+            <label for="propValor">Valor desejado</label>
+            <input type="number" id="propValor" class="form-control" min="500" max="50000" placeholder="2000">
+          </div>
+          <div class="form-group">
+            <label for="propParcelas">Parcelas</label>
+            <select id="propParcelas" class="form-control">
+              <option value="3">3 meses</option>
+              <option value="6">6 meses</option>
+              <option value="9">9 meses</option>
+              <option value="12" selected>12 meses</option>
+              <option value="18">18 meses</option>
+              <option value="24">24 meses</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="enviarPropostaBtn" style="width:100%">Solicitar Empréstimo</button>
+        </div>
+      </div>
+
+      <div id="propostaQRCode" style="display:none">
+        <div class="card card-lg">
+          <div class="qrcode-container">
+            <div style="text-align:center;margin-bottom:16px">
+              <div style="font-size:2rem;color:var(--accent);margin-bottom:8px">✓</div>
+              <h3 style="font-family:var(--font-display);font-size:1.3rem;color:var(--text-dark)">Proposta registrada!</h3>
+              <p style="color:var(--text-muted);font-size:0.9rem">Pague a taxa de solicitação de <strong>R$ 29,90</strong> via Pix para dar continuidade.</p>
+            </div>
+            <div class="qrcode-box">
+              <div class="qrcode-placeholder" id="qrcodePlaceholder"></div>
+            </div>
+            <div id="qrcodePayload" style="font-family:monospace;font-size:0.7rem;word-break:break-all;color:var(--text-muted);max-width:300px;text-align:center"></div>
+            <button class="btn btn-outline-green btn-sm" onclick="copiarQRCode()">Copiar código Pix</button>
+            <div id="qrcodeStatus" style="font-size:0.85rem;color:var(--text-muted);margin-top:8px">Aguardando pagamento...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="navbar-logo" style="font-size:1.8rem">Finan<span>Flex</span></div>
+          <p>Crédito rápido, seguro e sem burocracia.</p>
+        </div>
+        <div>
+          <h4>Produtos</h4>
+          <ul>
+            <li><a href="simulador.html">Simular Empréstimo</a></li>
+            <li><a href="cadastro.html">Solicitar Crédito</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="contato.html">Fale Conosco</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 FinanFlex.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    let propostaAtual = null;
+    let pollingInterval = null;
+
+    document.getElementById('propClienteCPF').addEventListener('blur', async function() {
+      const cpf = this.value.replace(/\D/g, '');
+      if (cpf.length !== 11) return;
+      try {
+        const data = await consultarCPF(cpf);
+        if (data && data.data) {
+          document.getElementById('propClienteInfo').style.display = 'block';
+          document.getElementById('propClienteInfo').innerHTML = `
+            <strong>${data.data.NOME}</strong><br>
+            <span style="font-size:0.85rem;color:var(--text-muted)">CPF: ${data.data.CPF} | Nasc: ${data.data.NASC?.split(' ')[0]}</span>
+            ${data.data.RENDA ? `<br><span style="font-size:0.85rem;color:var(--text-muted)">Renda: R$ ${data.data.RENDA}</span>` : ''}
+          `;
+        }
+      } catch {}
+    });
+
+    document.getElementById('enviarPropostaBtn').addEventListener('click', async function() {
+      const cpf = document.getElementById('propClienteCPF').value.replace(/\D/g, '');
+      const valor = parseFloat(document.getElementById('propValor').value);
+      const parcelas = parseInt(document.getElementById('propParcelas').value);
+      const feedback = document.getElementById('propostaFeedback');
+
+      if (!cpf || cpf.length !== 11) { feedback.innerHTML = '<div class="alert alert-error">CPF inválido</div>'; return; }
+      if (!valor || valor < 500) { feedback.innerHTML = '<div class="alert alert-error">Valor mínimo R$ 500</div>'; return; }
+
+      this.disabled = true;
+      this.textContent = 'Enviando...';
+
+      try {
+        const clienteResp = await api.post('/api/clientes', { nome: 'Cliente', cpf });
+        if (!clienteResp.cliente) throw new Error('Erro ao criar cliente');
+
+        const taxa = 3.5;
+        const jurosMensal = taxa / 100;
+        const parcelaValor = valor * (jurosMensal * Math.pow(1 + jurosMensal, parcelas)) / (Math.pow(1 + jurosMensal, parcelas) - 1);
+        const valorParcela = Math.round(parcelaValor * 100) / 100;
+
+        const propostaResp = await api.post('/api/propostas', {
+          cliente_id: clienteResp.cliente.id,
+          valor, parcelas, taxa_juros: taxa, cet: taxa + 0.3,
+          valor_parcela: valorParcela
+        });
+
+        propostaAtual = propostaResp.proposta;
+        feedback.innerHTML = `<div class="alert alert-success">Proposta #${propostaAtual.id} criada com sucesso!</div>`;
+
+        const cobrancaResp = await api.post('/api/cobranca/gerar', {
+          proposta_id: propostaAtual.id,
+          valor: 29.90
+        });
+
+        document.getElementById('propostaForm').style.display = 'none';
+        document.getElementById('propostaQRCode').style.display = 'block';
+        document.getElementById('qrcodePayload').textContent = cobrancaResp.cobranca.qrcode;
+
+        if (cobrancaResp.cobranca.status === 'pago') {
+          document.getElementById('qrcodeStatus').textContent = '✓ Pagamento confirmado! Proposta em análise.';
+          document.getElementById('qrcodeStatus').style.color = 'var(--accent)';
+          mostrarStatusProposta(propostaAtual);
+        }
+      } catch (err) {
+        feedback.innerHTML = `<div class="alert alert-error">${err.message || 'Erro ao criar proposta'}</div>`;
+      }
+      this.disabled = false;
+      this.textContent = 'Solicitar Empréstimo';
+    });
+
+    function copiarQRCode() {
+      const text = document.getElementById('qrcodePayload').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Código Pix copiado!');
+      });
+    }
+
+    function mostrarStatusProposta(proposta) {
+      document.getElementById('propostaQRCode').style.display = 'none';
+      document.getElementById('propostaStatus').style.display = 'block';
+
+      const statusMap = {
+        'pendente': { emoji: '⏳', title: 'Proposta pendente', msg: 'Aguardando pagamento da taxa de solicitação.', cor: '#F59E0B' },
+        'pago': { emoji: '✓', title: 'Pagamento confirmado!', msg: 'Sua proposta está em análise financeira.', cor: 'var(--accent)' },
+        'em_analise': { emoji: '🔄', title: 'Em análise', msg: 'Nossa equipe está analisando sua proposta.', cor: 'var(--teal-blue)' },
+        'aprovado': { emoji: '🎉', title: 'Aprovado!', msg: 'Parabéns! Seu empréstimo foi aprovado. O dinheiro será creditado em até 24h.', cor: 'var(--accent)' },
+        'rejeitado': { emoji: '😔', title: 'Não aprovado', msg: 'Infelizmente sua proposta não foi aprovada nesta ocasião.', cor: '#EF4444' }
+      };
+      const s = statusMap[proposta.status] || statusMap.pendente;
+
+      document.getElementById('statusEmoji').textContent = s.emoji;
+      document.getElementById('statusTitle').textContent = s.title;
+      document.getElementById('statusMessage').textContent = s.msg;
+      document.getElementById('statusMessage').style.color = s.cor;
+
+      document.getElementById('propostaDetalhes').innerHTML = `
+        <div><div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);font-weight:600">Proposta</div><div style="font-weight:600">#${proposta.id}</div></div>
+        <div><div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);font-weight:600">Valor</div><div style="font-weight:600">R$ ${(proposta.valor || 0).toFixed(2)}</div></div>
+        <div><div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);font-weight:600">Parcelas</div><div style="font-weight:600">${proposta.parcelas}x</div></div>
+        <div><div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);font-weight:600">Status</div><div><span class="badge badge-${proposta.status === 'aprovado' ? 'success' : proposta.status === 'rejeitado' ? 'danger' : proposta.status === 'pendente' ? 'warning' : 'info'}">${proposta.status}</span></div></div>
+      `;
+    }
+  </script>
+</body>
+</html>

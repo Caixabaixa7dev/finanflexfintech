@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - FinanFlex Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo">Finan<span>Flex</span></div>
+    <nav>
+      <a href="dashboard.html" class="active">📊 Dashboard</a>
+      <a href="propostas.html">📋 Propostas</a>
+      <a href="clientes.html">👥 Clientes</a>
+    </nav>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Dashboard</h1>
+      <div class="admin-user">
+        <span id="adminName">Admin</span>
+        <button class="logout-btn" onclick="logout()">Sair</button>
+      </div>
+    </div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-card-label">Total Propostas</div><div class="stat-card-value" id="statTotalPropostas">-</div></div>
+      <div class="stat-card"><div class="stat-card-label">Pendentes</div><div class="stat-card-value amber" id="statPendentes">-</div></div>
+      <div class="stat-card"><div class="stat-card-label">Aprovadas</div><div class="stat-card-value green" id="statAprovadas">-</div></div>
+      <div class="stat-card"><div class="stat-card-label">Rejeitadas</div><div class="stat-card-value red" id="statRejeitadas">-</div></div>
+      <div class="stat-card"><div class="stat-card-label">Total Clientes</div><div class="stat-card-value" id="statClientes">-</div></div>
+      <div class="stat-card"><div class="stat-card-label">Valor Aprovado</div><div class="stat-card-value green" id="statValorTotal">-</div></div>
+      <div class="stat-card"><div class="stat-card-label">Propostas Hoje</div><div class="stat-card-value" id="statHoje">-</div></div>
+      <div class="stat-card"><div class="stat-card-label">Propostas Mês</div><div class="stat-card-value" id="statMes">-</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px">
+      <h3 style="font-family:var(--font-display);color:var(--text-dark);margin-bottom:16px">Últimas Propostas</h3>
+      <div class="table-responsive">
+        <table>
+          <thead><tr><th>#</th><th>Cliente</th><th>Valor</th><th>Parcelas</th><th>Status</th><th>Data</th></tr></thead>
+          <tbody id="ultimasPropostas"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script>
+    function logout() {
+      localStorage.removeItem('finanflex_token');
+      localStorage.removeItem('finanflex_admin');
+      window.location.href = 'login.html';
+    }
+
+    async function carregarDashboard() {
+      try {
+        const data = await api.authGet('/api/admin/dashboard');
+
+        document.getElementById('statTotalPropostas').textContent = data.totalPropostas || 0;
+        document.getElementById('statPendentes').textContent = data.pendentes || 0;
+        document.getElementById('statAprovadas').textContent = data.aprovadas || 0;
+        document.getElementById('statRejeitadas').textContent = data.rejeitadas || 0;
+        document.getElementById('statClientes').textContent = data.totalClientes || 0;
+        document.getElementById('statValorTotal').textContent = 'R$ ' + ((data.valorTotalAprovado || 0)).toLocaleString('pt-BR', {minimumFractionDigits:2});
+        document.getElementById('statHoje').textContent = data.propostasHoje || 0;
+        document.getElementById('statMes').textContent = data.propostasMes || 0;
+
+        const tbody = document.getElementById('ultimasPropostas');
+        tbody.innerHTML = '';
+        if (data.ultimasPropostas && data.ultimasPropostas.length) {
+          data.ultimasPropostas.forEach(p => {
+            const statusClass = p.status === 'aprovado' ? 'success' : p.status === 'rejeitado' ? 'danger' : p.status === 'pendente' ? 'warning' : 'info';
+            tbody.innerHTML += `<tr>
+              <td>#${p.id}</td>
+              <td>${p.cliente_nome || '-'}</td>
+              <td>R$ ${(p.valor || 0).toFixed(2)}</td>
+              <td>${p.parcelas}x</td>
+              <td><span class="badge badge-${statusClass}">${p.status}</span></td>
+              <td>${new Date(p.created_at).toLocaleDateString('pt-BR')}</td>
+            </tr>`;
+          });
+        } else {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted)">Nenhuma proposta encontrada</td></tr>';
+        }
+      } catch (err) {
+        if (err.message === 'Unauthorized') {
+          logout();
+        }
+      }
+    }
+
+    const admin = JSON.parse(localStorage.getItem('finanflex_admin') || '{}');
+    if (!localStorage.getItem('finanflex_token')) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('adminName').textContent = admin.nome || 'Admin';
+      carregarDashboard();
+      setInterval(carregarDashboard, 30000);
+    }
+  </script>
+</body>
+</html>

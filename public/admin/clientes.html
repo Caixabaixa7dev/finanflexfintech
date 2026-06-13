@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes - FinanFlex Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo">Finan<span>Flex</span></div>
+    <nav>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="propostas.html">📋 Propostas</a>
+      <a href="clientes.html" class="active">👥 Clientes</a>
+    </nav>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Clientes</h1>
+      <div class="admin-user">
+        <span id="adminName">Admin</span>
+        <button class="logout-btn" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nome, CPF ou e-mail..." style="max-width:400px">
+      <button class="btn btn-primary btn-sm" onclick="carregarClientes()">Buscar</button>
+    </div>
+
+    <div class="card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Nome</th><th>CPF</th><th>E-mail</th><th>Celular</th><th>Renda</th><th>Cadastro</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="clientesList"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="clienteModal">
+    <div class="modal">
+      <h3 class="modal-title">Detalhes do Cliente</h3>
+      <div id="clienteDetalhes"></div>
+      <div style="margin-top:24px">
+        <button class="btn btn-sm" style="border:1px solid var(--border)" onclick="fecharModal()">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script>
+    let paginaAtual = 1;
+
+    function logout() {
+      localStorage.removeItem('finanflex_token');
+      window.location.href = 'login.html';
+    }
+
+    async function carregarClientes() {
+      const search = document.getElementById('searchInput').value;
+      let url = `/api/clientes?page=${paginaAtual}&limit=20`;
+      if (search) url += `&search=${encodeURIComponent(search)}`;
+
+      try {
+        const data = await api.authGet(url);
+        const tbody = document.getElementById('clientesList');
+        tbody.innerHTML = '';
+
+        if (data.clientes && data.clientes.length) {
+          data.clientes.forEach(c => {
+            tbody.innerHTML += `<tr>
+              <td>#${c.id}</td>
+              <td>${c.nome}</td>
+              <td>${c.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}</td>
+              <td>${c.email || '-'}</td>
+              <td>${c.celular || '-'}</td>
+              <td>R$ ${(c.renda || 0).toFixed(2)}</td>
+              <td>${new Date(c.created_at).toLocaleDateString('pt-BR')}</td>
+              <td><button class="action-btn" onclick="verCliente(${c.id})">Detalhes</button></td>
+            </tr>`;
+          });
+        } else {
+          tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text-muted)">Nenhum cliente encontrado</td></tr>';
+        }
+
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+        if (data.pages > 1) {
+          for (let i = 1; i <= data.pages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = i === data.page ? 'active' : '';
+            btn.onclick = () => { paginaAtual = i; carregarClientes(); };
+            pagination.appendChild(btn);
+          }
+        }
+      } catch (err) {
+        if (err.message === 'Unauthorized') logout();
+      }
+    }
+
+    async function verCliente(id) {
+      try {
+        const data = await api.authGet(`/api/clientes/${id}`);
+        const c = data.cliente;
+        document.getElementById('clienteDetalhes').innerHTML = `
+          <div class="proposal-detail">
+            <div class="detail-field"><label>ID</label><p>#${c.id}</p></div>
+            <div class="detail-field"><label>Nome</label><p>${c.nome}</p></div>
+            <div class="detail-field"><label>CPF</label><p>${c.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4')}</p></div>
+            <div class="detail-field"><label>E-mail</label><p>${c.email || '-'}</p></div>
+            <div class="detail-field"><label>Celular</label><p>${c.celular || '-'}</p></div>
+            <div class="detail-field"><label>Nascimento</label><p>${c.data_nascimento || '-'}</p></div>
+            <div class="detail-field"><label>Renda</label><p>R$ ${(c.renda || 0).toFixed(2)}</p></div>
+            <div class="detail-field"><label>Score</label><p>${c.score || '-'}</p></div>
+            <div class="detail-field"><label>Endereço</label><p>${c.endereco || '-'}${c.cidade ? ', ' + c.cidade : ''}${c.estado ? ' - ' + c.estado : ''}</p></div>
+            <div class="detail-field"><label>Cadastro</label><p>${new Date(c.created_at).toLocaleString('pt-BR')}</p></div>
+          </div>
+        `;
+        document.getElementById('clienteModal').classList.add('open');
+      } catch {}
+    }
+
+    function fecharModal() {
+      document.getElementById('clienteModal').classList.remove('open');
+    }
+
+    document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') { paginaAtual = 1; carregarClientes(); } });
+
+    const admin = JSON.parse(localStorage.getItem('finanflex_admin') || '{}');
+    if (!localStorage.getItem('finanflex_token')) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('adminName').textContent = admin.nome || 'Admin';
+      carregarClientes();
+    }
+  </script>
+</body>
+</html>

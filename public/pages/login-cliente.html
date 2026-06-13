@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acesso Cliente - FinanFlex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .login-cliente-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-deep);
+      padding: 24px;
+    }
+    .login-cliente-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 48px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      z-index: 1;
+    }
+    .login-cliente-card .login-logo { font-size: 2rem; text-align: center; margin-bottom: 4px; color: var(--text-primary); }
+    .login-cliente-card .login-subtitle { margin-bottom: 32px; }
+    .login-cliente-card .form-group { margin-bottom: 20px; }
+    .login-cliente-card .btn { width: 100%; }
+    .pin-dots { display: flex; gap: 12px; justify-content: center; margin: 24px 0; }
+    .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); background: var(--bg-white); transition: var(--transition); }
+    .pin-dot.filled { background: var(--accent); border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="login-cliente-page">
+    <div class="login-cliente-card">
+      <div class="login-logo"><img src="../assets/logo.png" alt="FinanFlex" height="64" style="margin:0 auto"></div>
+      <div class="login-subtitle">Acesse sua conta</div>
+      <div id="loginError" class="login-error" style="display:none"></div>
+      <div class="form-group">
+        <label for="clienteCPF">CPF</label>
+        <input type="text" id="clienteCPF" class="form-control" placeholder="000.000.000-00" maxlength="14" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="clientePIN">PIN de acesso</label>
+        <input type="password" id="clientePIN" class="form-control" placeholder="4 dígitos" maxlength="4" style="text-align:center;font-size:1.3rem;letter-spacing:8px" inputmode="numeric" pattern="[0-9]*">
+        <div class="pin-dots"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div>
+      </div>
+      <button class="btn btn-primary" id="loginClienteBtn">Acessar Minha Conta</button>
+      <p style="text-align:center;margin-top:20px;font-size:0.85rem;color:var(--text-muted)">
+        Ainda não tem conta? <a href="cadastro.html" style="color:var(--accent);font-weight:600">Cadastre-se</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script>
+    const cpfInput = document.getElementById('clienteCPF');
+    const pinInput = document.getElementById('clientePIN');
+    const pinDots = document.querySelectorAll('.pin-dot');
+
+    cpfInput.addEventListener('input', function() {
+      let v = this.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      this.value = v.replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d)/, '$1.$2').replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    });
+
+    pinInput.addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 4);
+      pinDots.forEach((dot, i) => dot.classList.toggle('filled', i < this.value.length));
+    });
+
+    document.getElementById('loginClienteBtn').addEventListener('click', async function() {
+      const cpf = cpfInput.value.replace(/\D/g, '');
+      const pin = pinInput.value;
+      const errorEl = document.getElementById('loginError');
+
+      if (cpf.length !== 11) { errorEl.textContent = 'CPF inválido'; errorEl.style.display = 'block'; return; }
+      if (pin.length < 4) { errorEl.textContent = 'PIN deve ter 4 dígitos'; errorEl.style.display = 'block'; return; }
+
+      errorEl.style.display = 'none';
+      this.disabled = true;
+      this.textContent = 'Entrando...';
+
+      try {
+        const data = await api.post('/api/cliente/login', { cpf, pin });
+        localStorage.setItem('finanflex_cliente_token', data.token);
+        localStorage.setItem('finanflex_cliente_dados', JSON.stringify(data.cliente));
+        window.location.href = 'minha-conta.html';
+      } catch (err) {
+        errorEl.textContent = err.message || 'Erro ao fazer login';
+        errorEl.style.display = 'block';
+        this.disabled = false;
+        this.textContent = 'Acessar Minha Conta';
+      }
+    });
+
+    pinInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') document.getElementById('loginClienteBtn').click();
+    });
+  </script>
+</body>
+</html>

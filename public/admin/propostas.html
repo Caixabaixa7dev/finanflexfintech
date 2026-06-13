@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propostas - FinanFlex Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body class="admin-body">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo">Finan<span>Flex</span></div>
+    <nav>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="propostas.html" class="active">📋 Propostas</a>
+      <a href="clientes.html">👥 Clientes</a>
+    </nav>
+  </aside>
+  <main class="admin-main">
+    <div class="admin-header">
+      <h1>Propostas</h1>
+      <div class="admin-user">
+        <span id="adminName">Admin</span>
+        <button class="logout-btn" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nome ou CPF..." style="max-width:300px">
+      <select id="statusFilter" class="form-control" style="width:auto">
+        <option value="">Todos status</option>
+        <option value="pendente">Pendente</option>
+        <option value="pago">Pago</option>
+        <option value="em_analise">Em análise</option>
+        <option value="aprovado">Aprovado</option>
+        <option value="rejeitado">Rejeitado</option>
+        <option value="cancelado">Cancelado</option>
+      </select>
+      <button class="btn btn-primary btn-sm" onclick="carregarPropostas()">Buscar</button>
+    </div>
+
+    <div class="card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Cliente</th><th>CPF</th><th>Valor</th><th>Parcelas</th><th>Cobrança</th><th>Status</th><th>Data</th><th>Ações</th></tr>
+          </thead>
+          <tbody id="propostasList"></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="propostaModal">
+    <div class="modal">
+      <h3 class="modal-title">Detalhes da Proposta</h3>
+      <div id="propostaDetalhes"></div>
+      <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap" id="acoesProposta">
+        <button class="btn btn-primary btn-sm" onclick="alterarStatus('aprovado')">✓ Aprovar</button>
+        <button class="btn btn-sm" style="border-color:#10B981;color:#10B981;border:1px solid;background:#D1FAE5" onclick="confirmarPagamento()">💳 Confirmar Pagamento</button>
+        <button class="btn btn-outline-green btn-sm" style="border-color:#F59E0B;color:#F59E0B" onclick="alterarStatus('em_analise')">🔄 Em Análise</button>
+        <button class="btn btn-sm" style="border-color:#EF4444;color:#EF4444;border:1px solid" onclick="alterarStatus('rejeitado')">✕ Rejeitar</button>
+        <button class="btn btn-sm" style="border-color:var(--border);color:var(--text-muted);border:1px solid" onclick="fecharModal()">Fechar</button>
+      </div>
+      <div id="statusFeedback" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script>
+    let paginaAtual = 1;
+    let propostaSelecionada = null;
+
+    function logout() {
+      localStorage.removeItem('finanflex_token');
+      window.location.href = 'login.html';
+    }
+
+    async function carregarPropostas() {
+      const status = document.getElementById('statusFilter').value;
+      const search = document.getElementById('searchInput').value;
+      let url = `/api/propostas?page=${paginaAtual}&limit=15`;
+      if (status) url += `&status=${status}`;
+      if (search) url += `&search=${encodeURIComponent(search)}`;
+
+      try {
+        const data = await api.authGet(url);
+        const tbody = document.getElementById('propostasList');
+        tbody.innerHTML = '';
+
+        if (data.propostas && data.propostas.length) {
+          data.propostas.forEach(p => {
+            const statusClass = p.status === 'aprovado' ? 'success' : p.status === 'rejeitado' || p.status === 'cancelado' ? 'danger' : p.status === 'pendente' ? 'warning' : 'info';
+            const cobClass = p.cobranca_status === 'pago' ? 'success' : p.cobranca_status === 'pendente' ? 'warning' : 'neutral';
+            tbody.innerHTML += `<tr>
+              <td>#${p.id}</td>
+              <td>${p.cliente_nome || '-'}</td>
+              <td>${p.cliente_cpf || '-'}</td>
+              <td>R$ ${(p.valor || 0).toFixed(2)}</td>
+              <td>${p.parcelas}x</td>
+              <td>${p.cobranca_status ? `<span class="badge badge-${cobClass}">${p.cobranca_status}</span>` : '<span class="badge badge-neutral">-</span>'}</td>
+              <td><span class="badge badge-${statusClass}">${p.status}</span></td>
+              <td>${new Date(p.created_at).toLocaleDateString('pt-BR')}</td>
+              <td>
+                <button class="action-btn" onclick="verProposta(${p.id})">Detalhes</button>
+              </td>
+            </tr>`;
+          });
+        } else {
+          tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-muted)">Nenhuma proposta encontrada</td></tr>';
+        }
+
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+        if (data.pages > 1) {
+          for (let i = 1; i <= data.pages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = i;
+            btn.className = i === data.page ? 'active' : '';
+            btn.onclick = () => { paginaAtual = i; carregarPropostas(); };
+            pagination.appendChild(btn);
+          }
+        }
+      } catch (err) {
+        if (err.message === 'Unauthorized') logout();
+      }
+    }
+
+    async function verProposta(id) {
+      try {
+        const data = await api.authGet(`/api/propostas/${id}`);
+        propostaSelecionada = data.proposta;
+        const p = data.proposta;
+        const cobClass = p.cobranca_status === 'pago' ? 'success' : p.cobranca_status === 'pendente' ? 'warning' : 'neutral';
+        document.getElementById('propostaDetalhes').innerHTML = `
+          <div class="proposal-detail">
+            <div class="detail-field"><label>Proposta</label><p>#${p.id}</p></div>
+            <div class="detail-field"><label>Status</label><p><span class="badge badge-${p.status === 'aprovado' ? 'success' : p.status === 'rejeitado' ? 'danger' : 'warning'}">${p.status}</span></p></div>
+            <div class="detail-field"><label>Cobrança</label><p>${p.cobranca_id ? `<span class="badge badge-${cobClass}">${p.cobranca_status}${p.cobranca_valor ? ' - R$ ' + Number(p.cobranca_valor).toFixed(2) : ''}</span>` : '<span class="badge badge-neutral">Não gerada</span>'}</p></div>
+            <div class="detail-field"><label>Cliente</label><p>${p.cliente_nome || '-'}</p></div>
+            <div class="detail-field"><label>CPF</label><p>${p.cliente_cpf || '-'}</p></div>
+            <div class="detail-field"><label>E-mail</label><p>${p.email || '-'}</p></div>
+            <div class="detail-field"><label>Telefone</label><p>${p.telefone || p.celular || '-'}</p></div>
+            <div class="detail-field"><label>Renda</label><p>R$ ${(p.renda || 0).toFixed(2)}</p></div>
+            <div class="detail-field"><label>Valor solicitado</label><p>R$ ${(p.valor || 0).toFixed(2)}</p></div>
+            <div class="detail-field"><label>Parcelas</label><p>${p.parcelas}x</p></div>
+            <div class="detail-field"><label>Valor parcela</label><p>R$ ${(p.valor_parcela || 0).toFixed(2)}</p></div>
+            <div class="detail-field"><label>Taxa de juros</label><p>${p.taxa_juros || 0}% a.m.</p></div>
+            <div class="detail-field"><label>CET</label><p>${p.cet || 0}% a.m.</p></div>
+            <div class="detail-field"><label>Data</label><p>${new Date(p.created_at).toLocaleString('pt-BR')}</p></div>
+            <div class="detail-field"><label>Observação</label><p>${p.observacao || '-'}</p></div>
+          </div>
+        `;
+        document.getElementById('propostaModal').classList.add('open');
+        document.getElementById('statusFeedback').innerHTML = '';
+      } catch {}
+    }
+
+    function fecharModal() {
+      document.getElementById('propostaModal').classList.remove('open');
+      propostaSelecionada = null;
+    }
+
+    async function alterarStatus(status) {
+      if (!propostaSelecionada) return;
+      try {
+        await api.authPut(`/api/propostas/${propostaSelecionada.id}/status`, { status });
+        document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-success">Status atualizado para: ${status}</div>`;
+        carregarPropostas();
+        setTimeout(fecharModal, 1500);
+      } catch (err) {
+        document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+      }
+    }
+
+    async function confirmarPagamento() {
+      if (!propostaSelecionada) return;
+      if (!propostaSelecionada.cobranca_id) {
+        document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-error">Nenhuma cobrança gerada para esta proposta</div>`;
+        return;
+      }
+      try {
+        await api.authPut(`/api/cobranca/${propostaSelecionada.cobranca_id}/confirmar`);
+        document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-success">✓ Pagamento confirmado! Proposta em análise.</div>`;
+        carregarPropostas();
+        setTimeout(fecharModal, 1500);
+      } catch (err) {
+        document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-error">${err.message}</div>`;
+      }
+    }
+
+    document.getElementById('statusFilter').addEventListener('change', () => { paginaAtual = 1; carregarPropostas(); });
+    document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') { paginaAtual = 1; carregarPropostas(); } });
+
+    const admin = JSON.parse(localStorage.getItem('finanflex_admin') || '{}');
+    if (!localStorage.getItem('finanflex_token')) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('adminName').textContent = admin.nome || 'Admin';
+      carregarPropostas();
+    }
+  </script>
+</body>
+</html>

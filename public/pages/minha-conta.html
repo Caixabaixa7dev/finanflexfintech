@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minha Conta - FinanFlex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <style>
+    .tracker { display: flex; justify-content: center; gap: 0; margin: 40px 0; position: relative; }
+    .tracker-step { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+    .tracker-step:not(:last-child)::after {
+      content: ''; position: absolute; top: 20px; left: 50%; width: 100%; height: 3px;
+      background: var(--border); z-index: 0; transition: var(--transition);
+    }
+    .tracker-step.done:not(:last-child)::after { background: var(--accent); }
+    .tracker-step.active:not(:last-child)::after { background: linear-gradient(90deg, var(--accent) 50%, var(--border) 50%); }
+    .tracker-circle {
+      width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.9rem; z-index: 1;
+      background: var(--border); color: var(--text-light); border: 3px solid var(--border);
+      transition: var(--transition);
+    }
+    .tracker-step.done .tracker-circle { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .tracker-step.active .tracker-circle { background: var(--text-dark); color: #fff; border-color: var(--text-dark); box-shadow: 0 0 0 4px rgba(16,185,129,0.2); }
+    .tracker-step.rejected .tracker-circle { background: #EF4444; color: #fff; border-color: #EF4444; }
+    .tracker-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 8px; text-align: center; font-weight: 500; max-width: 90px; }
+    .tracker-step.done .tracker-label { color: var(--accent); font-weight: 600; }
+    .tracker-step.active .tracker-label { color: var(--text-dark); font-weight: 600; }
+    .tracker-step.rejected .tracker-label { color: #EF4444; font-weight: 600; }
+    .tracker-date { font-size: 0.65rem; color: var(--text-light); margin-top: 2px; }
+
+    .proposal-card { background: var(--bg-white); border-radius: var(--radius); padding: 32px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); margin-bottom: 24px; }
+    .proposal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .proposal-status-big { font-size: 2.5rem; }
+    .proposal-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .proposal-empty svg { width: 64px; height: 64px; color: var(--text-light); margin-bottom: 16px; }
+
+    .client-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+    .client-info { display: flex; align-items: center; gap: 16px; }
+    .client-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--teal-light); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 1.2rem; color: var(--text-dark); }
+    .client-name { font-family: var(--font-display); font-size: 1.3rem; color: var(--text-dark); }
+    .client-cpf { font-size: 0.85rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">Finan<span>Flex</span></a>
+      <button class="navbar-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <ul class="navbar-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="simulador.html">Simular</a></li>
+        <li><a href="cadastro.html">Cadastro</a></li>
+        <li><a href="minha-conta.html" style="color:#fff;font-weight:600">Minha Conta</a></li>
+        <li><a href="#" id="sairBtn" style="color:#EF4444">Sair</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="section" style="padding-top:120px">
+    <div class="container" style="max-width:800px">
+      <div id="loginPrompt" style="display:none">
+        <div class="card card-lg" style="text-align:center;padding:60px">
+          <div style="font-size:3rem;margin-bottom:16px">🔐</div>
+          <h2 style="font-family:var(--font-display);font-size:1.5rem;color:var(--text-dark);margin-bottom:12px">Faça login para acessar</h2>
+          <p style="color:var(--text-muted);margin-bottom:24px">Entre com seu CPF e PIN para acompanhar suas propostas.</p>
+          <a href="login-cliente.html" class="btn btn-primary">Acessar Minha Conta</a>
+        </div>
+      </div>
+
+      <div id="conteudoLogado" style="display:none">
+        <div class="client-header">
+          <div class="client-info">
+            <div class="client-avatar" id="avatarIniciais">FF</div>
+            <div>
+              <div class="client-name" id="clienteNome">Carregando...</div>
+              <div class="client-cpf" id="clienteCPF">...</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-sm" style="border:1px solid var(--border);background:var(--bg-white)" onclick="carregarPropostas()">🔄 Atualizar</button>
+            <button class="btn btn-sm" style="border:1px solid var(--border);background:var(--bg-white)" onclick="sair()">Sair</button>
+          </div>
+        </div>
+
+        <div id="propostasContainer">
+          <div style="text-align:center;padding:40px" id="loadingPropostas">
+            <div class="spinner"></div>
+            <p style="color:var(--text-muted)">Carregando suas propostas...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="navbar-logo" style="font-size:1.8rem">Finan<span>Flex</span></div>
+          <p>Crédito rápido, seguro e sem burocracia.</p>
+        </div>
+        <div><h4>Produtos</h4><ul><li><a href="simulador.html">Simular Empréstimo</a></li><li><a href="cadastro.html">Solicitar Crédito</a></li></ul></div>
+        <div><h4>Ajuda</h4><ul><li><a href="contato.html">Fale Conosco</a></li></ul></div>
+        <div><h4>Contato</h4><ul><li><a href="#">contato@finanflex.com.br</a></li></ul></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 FinanFlex.</span></div>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script>
+    function sair() {
+      localStorage.removeItem('finanflex_cliente_token');
+      localStorage.removeItem('finanflex_cliente_dados');
+      location.reload();
+    }
+
+    const steps = [
+      { id: 'cadastro', label: 'Cadastro' },
+      { id: 'pagamento', label: 'Pagamento' },
+      { id: 'analise', label: 'Análise' },
+      { id: 'resultado', label: 'Resultado' }
+    ];
+
+    function getStepStatus(proposta) {
+      const status = proposta.status;
+      const cobStatus = proposta.cobranca_status;
+
+      if (status === 'aprovado' || status === 'rejeitado') return 4;
+      if (status === 'em_analise') return 3;
+      if (cobStatus === 'pago') return 2;
+      if (cobStatus === 'pendente') return 1;
+      return 1;
+    }
+
+    let refreshInterval = null;
+
+    function renderTracker(proposta) {
+      const currentStep = getStepStatus(proposta);
+      const status = proposta.status;
+      const isRejected = status === 'rejeitado' || status === 'cancelado';
+
+      return `
+        <div class="tracker">
+          ${steps.map((step, i) => {
+            let stepClass = 'tracker-step';
+            if (i < currentStep) stepClass += ' done';
+            else if (i === currentStep) stepClass += isRejected && i === 3 ? ' rejected' : ' active';
+            if (isRejected && i === 3) stepClass += ' rejected';
+
+            const icon = i < currentStep ? '✓' : (isRejected && i === 3 ? '✕' : (i + 1));
+            return `
+              <div class="${stepClass}">
+                <div class="tracker-circle">${icon}</div>
+                <div class="tracker-label">${step.label}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function renderProposta(proposta) {
+      const isAprovado = proposta.status === 'aprovado';
+      const isRejeitado = proposta.status === 'rejeitado' || proposta.status === 'cancelado';
+      const statusEmoji = isAprovado ? '🎉' : isRejeitado ? '😔' : '⏳';
+      const statusTitle = isAprovado ? 'Aprovado!' : isRejeitado ? 'Não aprovado' : 'Em andamento';
+      const statusColor = isAprovado ? 'var(--accent)' : isRejeitado ? '#EF4444' : '#F59E0B';
+
+      return `
+        <div class="proposal-card">
+          <div class="proposal-header">
+            <div>
+              <h3 style="font-family:var(--font-display);font-size:1.3rem;color:var(--text-dark);margin-bottom:4px">Proposta #${proposta.id}</h3>
+              <span style="font-size:0.85rem;color:var(--text-muted)">Solicitada em ${new Date(proposta.created_at).toLocaleDateString('pt-BR')}</span>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);letter-spacing:1px">Status</div>
+              <span class="badge badge-${isAprovado ? 'success' : isRejeitado ? 'danger' : proposta.status === 'em_analise' ? 'info' : 'warning'}">${proposta.status}</span>
+            </div>
+          </div>
+
+          ${renderTracker(proposta)}
+
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px;padding-top:24px;border-top:1px solid var(--border)">
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);letter-spacing:1px;font-weight:600">Valor</div>
+              <div style="font-size:1.2rem;font-weight:600;color:var(--text-dark)">R$ ${(proposta.valor || 0).toFixed(2)}</div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);letter-spacing:1px;font-weight:600">Parcelas</div>
+              <div style="font-size:1.2rem;font-weight:600;color:var(--text-dark)">${proposta.parcelas}x</div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);letter-spacing:1px;font-weight:600">Valor parcela</div>
+              <div style="font-size:1.2rem;font-weight:600;color:var(--accent)">R$ ${(proposta.valor_parcela || 0).toFixed(2)}</div>
+            </div>
+            <div>
+              <div style="font-size:0.75rem;text-transform:uppercase;color:var(--text-light);letter-spacing:1px;font-weight:600">Total</div>
+              <div style="font-size:1.2rem;font-weight:600;color:var(--text-dark)">R$ ${((proposta.valor_parcela || 0) * (proposta.parcelas || 0)).toFixed(2)}</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;padding:16px;background:var(--bg);border-radius:var(--radius-sm);display:flex;align-items:center;gap:12px">
+            <span style="font-size:1.5rem">${statusEmoji}</span>
+            <div>
+              <div style="font-weight:600;color:${statusColor}">${statusTitle}</div>
+              <div style="font-size:0.85rem;color:var(--text-muted)">
+                ${isAprovado ? 'Parabéns! Seu empréstimo foi aprovado. O valor será creditado em sua conta em até 24h.' :
+                  isRejeitado ? 'Infelizmente sua proposta não foi aprovada nesta ocasião. Entre em contato para mais informações.' :
+                  proposta.cobranca_status === 'pendente' ? 'Aguardando confirmação do pagamento da taxa de solicitação.' :
+                  proposta.cobranca_status === null || !proposta.cobranca_status ? 'Pagamento pendente. Gere o boleto/Pix para continuar.' :
+                  'Sua proposta está em análise financeira. Em breve você receberá uma resposta.'}
+              </div>
+            </div>
+          </div>
+
+          ${proposta.cobranca_qrcode && proposta.cobranca_status === 'pendente' ? `
+            <div style="margin-top:16px;text-align:center">
+              <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px">Pague a taxa de R$ 29,90 via Pix para continuar:</p>
+              <div style="font-family:monospace;font-size:0.65rem;word-break:break-all;color:var(--text-light);max-width:400px;margin:0 auto;padding:8px;background:var(--bg);border-radius:8px">${proposta.cobranca_qrcode}</div>
+              <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="copiarPix('${proposta.cobranca_qrcode}')">Copiar código Pix</button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    function copiarPix(code) {
+      navigator.clipboard.writeText(code).then(() => alert('Código Pix copiado!'));
+    }
+
+    async function carregarPropostas() {
+      const token = localStorage.getItem('finanflex_cliente_token');
+      if (!token) return;
+
+      try {
+        const data = await fetch('/api/cliente/propostas', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }).then(r => r.json());
+
+        const container = document.getElementById('propostasContainer');
+
+        if (!data.propostas || data.propostas.length === 0) {
+          container.innerHTML = `
+            <div class="proposal-empty">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+              <h3 style="font-family:var(--font-display);font-size:1.2rem;color:var(--text-dark);margin-bottom:8px">Nenhuma proposta ainda</h3>
+              <p style="color:var(--text-muted);margin-bottom:24px">Você ainda não solicitou nenhum empréstimo.</p>
+              <a href="simulador.html" class="btn btn-primary">Simular Agora</a>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = data.propostas.map(p => renderProposta(p)).join('');
+      } catch (err) {
+        if (err.message === 'Unauthorized' || err.status === 401) {
+          sair();
+          return;
+        }
+        document.getElementById('propostasContainer').innerHTML = `
+          <div class="alert alert-error">Erro ao carregar propostas.</div>
+        `;
+      }
+    }
+
+    function iniciarPolling() {
+      if (refreshInterval) clearInterval(refreshInterval);
+      refreshInterval = setInterval(carregarPropostas, 15000);
+    }
+
+    /* Init */
+    const token = localStorage.getItem('finanflex_cliente_token');
+    const dados = JSON.parse(localStorage.getItem('finanflex_cliente_dados') || '{}');
+
+    if (token && dados.nome) {
+      document.getElementById('loginPrompt').style.display = 'none';
+      document.getElementById('conteudoLogado').style.display = 'block';
+      document.getElementById('clienteNome').textContent = dados.nome;
+      document.getElementById('clienteCPF').textContent = dados.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+      document.getElementById('avatarIniciais').textContent = dados.nome.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+      carregarPropostas();
+      iniciarPolling();
+    } else {
+      document.getElementById('loginPrompt').style.display = 'block';
+    }
+
+    document.getElementById('sairBtn')?.addEventListener('click', function(e) {
+      e.preventDefault();
+      sair();
+    });
+  </script>
+</body>
+</html>

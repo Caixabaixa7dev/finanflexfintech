@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato - FinanFlex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-logo">
+        <img src="../assets/logo.png" alt="FinanFlex" height="48">
+      </a>
+      <button class="navbar-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <ul class="navbar-links" id="navLinks">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="simulador.html">Simular</a></li>
+        <li><a href="cadastro.html">Cadastro</a></li>
+        <li><a href="quem-somos.html">Quem Somos</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="login-cliente.html">Minha Conta</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>Fale Conosco</h1>
+      <p>Estamos aqui para ajudar. Escolha o canal mais pratico para voce.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container" style="max-width:720px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px">
+        <div class="card" style="text-align:center">
+          <div style="width:56px;height:56px;background:var(--accent-subtle);border:1px solid var(--border-accent);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          </div>
+          <h4 style="font-family:var(--font-display);color:var(--text-dark);margin-bottom:8px">WhatsApp</h4>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:16px">Atendimento rapido via WhatsApp</p>
+          <a href="#" class="btn btn-primary btn-sm">(11) 99999-8888</a>
+        </div>
+        <div class="card" style="text-align:center">
+          <div style="width:56px;height:56px;background:var(--accent-subtle);border:1px solid var(--border-accent);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="28" height="28"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h4 style="font-family:var(--font-display);color:var(--text-dark);margin-bottom:8px">E-mail</h4>
+          <p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:16px">Envie sua mensagem</p>
+          <a href="#" class="btn btn-outline-green btn-sm">contato@finanflex.com.br</a>
+        </div>
+      </div>
+
+      <div class="card card-lg">
+        <h3 style="font-family:var(--font-display);font-size:1.3rem;color:var(--text-dark);margin-bottom:24px">Envie uma mensagem</h3>
+        <div id="contatoFeedback"></div>
+        <div class="form-group">
+          <label for="contatoNome">Nome</label>
+          <input type="text" id="contatoNome" class="form-control" placeholder="Seu nome">
+        </div>
+        <div class="form-group">
+          <label for="contatoEmail">E-mail</label>
+          <input type="email" id="contatoEmail" class="form-control" placeholder="seu@email.com">
+        </div>
+        <div class="form-group">
+          <label for="contatoMensagem">Mensagem</label>
+          <textarea id="contatoMensagem" class="form-control" rows="5" placeholder="Sua mensagem"></textarea>
+        </div>
+        <button class="btn btn-primary" id="enviarContatoBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Enviar Mensagem
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="../assets/logo.png" alt="FinanFlex" height="56">
+          <p>Credito rapido, seguro e sem burocracia.</p>
+        </div>
+        <div>
+          <h4>Produtos</h4>
+          <ul>
+            <li><a href="simulador.html">Simular Emprestimo</a></li>
+            <li><a href="cadastro.html">Solicitar Credito</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Ajuda</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="contato.html">Fale Conosco</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <ul>
+            <li><a href="#">contato@finanflex.com.br</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 FinanFlex.</span>
+        <div class="footer-social">
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.getElementById('enviarContatoBtn').addEventListener('click', function() {
+      const feedback = document.getElementById('contatoFeedback');
+      const nome = document.getElementById('contatoNome').value;
+      const email = document.getElementById('contatoEmail').value;
+      const mensagem = document.getElementById('contatoMensagem').value;
+
+      if (!nome || !email || !mensagem) {
+        feedback.innerHTML = '<div class="alert alert-error">Preencha todos os campos</div>';
+        return;
+      }
+
+      feedback.innerHTML = '<div class="alert alert-success">Mensagem enviada com sucesso! Entraremos em contato em breve.</div>';
+      document.getElementById('contatoNome').value = '';
+      document.getElementById('contatoEmail').value = '';
+      document.getElementById('contatoMensagem').value = '';
+    });
+  </script>
+</body>
+</html>
