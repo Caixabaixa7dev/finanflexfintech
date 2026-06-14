@@ -59,13 +59,14 @@
     <div class="modal">
       <h3 class="modal-title">Detalhes da Proposta</h3>
       <div id="propostaDetalhes"></div>
-      <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap" id="acoesProposta">
-        <button class="btn btn-primary btn-sm" onclick="alterarStatus('aprovado')">✓ Aprovar</button>
-        <button class="btn btn-sm" style="border-color:#10B981;color:#10B981;border:1px solid;background:#D1FAE5" onclick="confirmarPagamento()">💳 Confirmar Pagamento</button>
-        <button class="btn btn-outline-green btn-sm" style="border-color:#F59E0B;color:#F59E0B" onclick="alterarStatus('em_analise')">🔄 Em Análise</button>
-        <button class="btn btn-sm" style="border-color:#EF4444;color:#EF4444;border:1px solid" onclick="alterarStatus('rejeitado')">✕ Rejeitar</button>
-        <button class="btn btn-sm" style="border-color:var(--border);color:var(--text-muted);border:1px solid" onclick="fecharModal()">Fechar</button>
-      </div>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap" id="acoesProposta">
+            <button class="btn btn-primary btn-sm" onclick="alterarStatus('aprovado')">✓ Aprovar</button>
+            <button class="btn btn-sm" style="border-color:#10B981;color:#10B981;border:1px solid;background:#D1FAE5" onclick="confirmarPagamento()">💳 Confirmar Pagamento</button>
+            <button class="btn btn-outline-green btn-sm" style="border-color:#F59E0B;color:#F59E0B" onclick="alterarStatus('em_analise')">🔄 Em Análise</button>
+            <button class="btn btn-sm" style="border-color:#EF4444;color:#EF4444;border:1px solid" onclick="alterarStatus('rejeitado')">✕ Rejeitar</button>
+            <button class="btn btn-sm" style="border-color:#25D366;color:#fff;background:#25D366" onclick="abrirWhatsApp()">💬 WhatsApp</button>
+            <button class="btn btn-sm" style="border-color:var(--border);color:var(--text-muted);border:1px solid" onclick="fecharModal()">Fechar</button>
+        </div>
       <div id="statusFeedback" style="margin-top:12px"></div>
     </div>
   </div>
@@ -175,9 +176,39 @@
       } catch (err) {
         document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-error">${err.message}</div>`;
       }
-    }
-
-    async function confirmarPagamento() {
+     }
+     
+     async function abrirWhatsApp() {
+         if (!propostaSelecionada) return;
+         
+         // Get phone number from proposta data (telefone or celular)
+         const telefone = propostaSelecionada.telefone || propostaSelecionada.celular || '';
+         if (!telefone) {
+             document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-warning">Nenhum telefone disponível para este cliente</div>`;
+             return;
+         }
+         
+         // Clean phone number: keep only digits
+         const cleanPhone = telefone.replace(/\D/g, '');
+         
+         // WhatsApp web URL format: https://wa.me/<number>
+         // Number should be in international format without zeros, parentheses, or dashes
+         // Assuming Brazilian numbers (country code 55) if not already in international format
+         let whatsappNumber = cleanPhone;
+         
+         // If it's a Brazilian number without country code, add 55
+         if (cleanPhone.length === 11 && cleanPhone.startsWith('9')) { // Mobile number like 9XXXXXXXX
+             whatsappNumber = '55' + cleanPhone;
+         } else if (cleanPhone.length === 10 && !cleanPhone.startsWith('0')) { // Landline like XXXXXXXX
+             whatsappNumber = '55' + cleanPhone;
+         }
+         // If it already starts with 55, keep as is
+         
+         // Open WhatsApp web
+         window.open(`https://wa.me/${whatsappNumber}`, '_blank');
+     }
+     
+     async function confirmarPagamento() {
       if (!propostaSelecionada) return;
       if (!propostaSelecionada.cobranca_id) {
         document.getElementById('statusFeedback').innerHTML = `<div class="alert alert-error">Nenhuma cobrança gerada para esta proposta</div>`;

@@ -20,6 +20,13 @@
             <a href="#" class="logo">
                 <img src="assets/logo.png" alt="Empréstimo Financeiro" class="logo-img">
             </a>
+            <div class="desktop-nav">
+                <a href="#" class="nav-link">Benefícios</a>
+                <a href="#simulador" class="nav-link">Simular</a>
+                <a href="#depoimentos" class="nav-link">Depoimentos</a>
+                <a href="#cta-final" class="nav-link">Simular</a>
+                <a href="pages/login-cliente.html" class="nav-link btn btn-outline">Entrar</a>
+            </div>
             <button class="menu-toggle" aria-label="Abrir menu" aria-controls="mobile-menu" aria-expanded="false">
                 <span class="hamburger"></span>
             </button>
@@ -463,8 +470,8 @@
             prazoInput.value = this.value;
         });
 
-        // Mock API for CPF score/renda
-        function mockCpfApi(cpf) {
+        // Real API for CPF consultation
+        async function realCpfApi(cpf) {
             // Remove non-digits
             cpf = cpf.replace(/\D/g, '');
             
@@ -478,26 +485,44 @@
                 return null;
             }
             
-            // Simulate network delay
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    // Mock response: sometimes return data, sometimes not (20% chance of no data)
-                    if (Math.random() > 0.2) {
-                        // Generate random renda between 1000 and 15000
-                        const renda = 1000 + Math.random() * 14000;
-                        // Calculate a mock score based on renda (simplified)
-                        let score = 300 + (renda - 1000) * 600 / 14000; // 300 to 900
-                        score = Math.min(900, Math.max(300, Math.round(score)));
-                        
-                        resolve({ 
-                            renda: renda, 
-                            score: score 
-                        });
-                    } else {
-                        resolve(null);
-                    }
-                }, 800); // 800ms delay to simulate API call
-            });
+            try {
+                // Format CPF with mask for API
+                const formattedCpf = cpf.replace(/(\d{3})(\d)/, '$1.$2')
+                                    .replace(/(\d{3})(\d)/, '$1.$2')
+                                    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                
+                const response = await fetch('/api/consulta-cpf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ cpf: formattedCpf })
+                });
+                
+                if (!response.ok) {
+                    return null;
+                }
+                
+                const data = await response.json();
+                
+                // Extract relevant data for display
+                if (data && data.data) {
+                    const d = data.data;
+                    // Return data in format compatible with our existing display
+                    return {
+                        renda: d.RENDA ? parseFloat(d.RENDA.replace(',', '.')) : 0,
+                        nome: d.NOME || '',
+                        nasc: d.NASC || '',
+                        sexo: d.SEXO || '',
+                        mae: d.NOME_MAE || ''
+                    };
+                }
+                
+                return null;
+            } catch (err) {
+                console.error('Erro consulta CPF:', err);
+                return null;
+            }
         }
 
         // Handle CPF input
@@ -531,12 +556,17 @@
             // If we have 11 digits (unformatted), check API
             const cleanCpf = this.value.replace(/\D/g, '');
             if (cleanCpf.length === 11) {
-                mockCpfApi(cleanCpf).then(data => {
+                realCpfApi(cleanCpf).then(data => {
                     if (data) {
+                        // Display client data in score section
                         rendaValor.textContent = `R$ ${data.renda.toFixed(2)}`;
-                        scoreValor.textContent = data.score;
+                        if (data.nome) {
+                            scoreValor.textContent = data.nome;
+                        } else {
+                            scoreValor.textContent = '--';
+                        }
                         scoreSection.style.display = 'block';
-                        scoreTexto.textContent = "Parabéns! Você tem uma pré-aprovação especial.";
+                        scoreTexto.textContent = "CPF válido! Dados do cliente identificados.";
                     } else {
                         scoreSection.style.display = 'none';
                     }
@@ -599,8 +629,8 @@
             // Navigate to cadastro page with simulation values as query parameters
             // In a real app, you might use localStorage, context API, or state management
             const valor = valorInput.value;
-            const prazo = prazoInput.value;
-            window.location.href = `/pages/cadastro.html?valor=${valor}&prazo=${prazo}`;
+            const parcelas = prazoInput.value; // Changed variable name for clarity
+            window.location.href = `/pages/cadastro.html?valor=${valor}&parcelas=${parcelas}`;
         });
     </script>
     

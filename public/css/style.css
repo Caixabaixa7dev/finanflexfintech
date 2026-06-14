@@ -124,6 +124,44 @@ textarea:focus {
     color: #2ECC71;
 }
 
+/* Logo image specific styling */
+.logo-img {
+    height: 60px;
+    width: auto;
+    display: block;
+}
+
+/* Desktop Navigation */
+.desktop-nav {
+    display: none;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-weight: 600;
+    color: #0A1A2F;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(10,26,47,0.05);
+    color: #0A1A2F;
+}
+
+.nav-link.btn-outline {
+    border: 2px solid #0A1A2F;
+    background: transparent;
+}
+
+.nav-link.btn-outline:hover {
+    background-color: #0A1A2F;
+    color: #E8E4D9;
+}
+
 .menu-toggle {
     background: none;
     border: none;
@@ -1262,5 +1300,25 @@ textarea:focus {
     
     .cta-text {
         font-size: clamp(1rem, 3vw, 1.1rem);
+    }
+    
+    /* Mobile-specific styles */
+    .desktop-nav {
+        display: none !important;
+    }
+    
+    .menu-toggle {
+        display: flex !important;
+    }
+}
+
+@media (min-width: 768px) {
+    /* Desktop-specific styles */
+    .desktop-nav {
+        display: flex !important;
+    }
+    
+    .menu-toggle {
+        display: none !important;
     }
 }
