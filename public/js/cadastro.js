@@ -8,7 +8,15 @@
 
   /* CPF mask */
   const cpfInput = document.getElementById('cadCPF');
+  const urlParams = new URLSearchParams(window.location.search);
+  const cpfParam = urlParams.get('cpf');
+
   if (cpfInput) {
+    if (cpfParam) {
+      cpfInput.value = formatCPF(cpfParam);
+      setTimeout(() => consultarCPFAutomatico(cpfParam), 300);
+    }
+    
     cpfInput.addEventListener('input', function() {
       let v = this.value.replace(/\D/g, '');
       if (v.length > 11) v = v.slice(0, 11);
@@ -249,7 +257,11 @@
               proposta_id: proposta.proposta.id,
               valor: 29.90
             });
-            feedback.innerHTML += `<div class="alert alert-info" style="margin-top:8px">💳 Taxa de R$ 29,90 gerada. <a href="proposta.html" style="color:var(--teal-deep);font-weight:600">Pagar agora →</a></div>`;
+            feedback.innerHTML += `
+              <div class="alert alert-info" style="margin-top:8px">
+                Taxa de R$ 29,90 gerada. <a href="proposta.html" style="color:var(--teal-deep);font-weight:600">Pagar agora →</a>
+              </div>
+            `;
           } catch {}
         }
 

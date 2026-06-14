@@ -6,6 +6,16 @@
   const simTaxa = document.getElementById('simTaxa');
   const recalcularBtn = document.getElementById('recalcularBtn');
   const solicitarBtn = document.getElementById('solicitarBtn');
+  const simCpf = document.getElementById('simCpf');
+
+  if (simCpf) {
+    simCpf.addEventListener('input', function(e) {
+      let v = e.target.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      e.target.value = formatCPF(v);
+      calcular();
+    });
+  }
 
   function calcular() {
     const valor = parseInt(simValor.value) || 2000;
@@ -25,7 +35,11 @@
     document.getElementById('resCet').textContent = (taxaMensal * 100 + 0.3).toFixed(2) + '% a.m.';
 
     if (solicitarBtn) {
-      solicitarBtn.href = `cadastro.html?valor=${valor}&parcelas=${parcelas}`;
+      let url = `cadastro.html?valor=${valor}&parcelas=${parcelas}`;
+      if (simCpf && simCpf.value) {
+        url += `&cpf=${simCpf.value.replace(/\D/g, '')}`;
+      }
+      solicitarBtn.href = url;
     }
 
     /* Tabela de amortização */
