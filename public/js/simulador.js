@@ -12,7 +12,9 @@
     simCpf.addEventListener('input', function(e) {
       let v = e.target.value.replace(/\D/g, '');
       if (v.length > 11) v = v.slice(0, 11);
-      e.target.value = formatCPF(v);
+      e.target.value = v.replace(/(\d{3})(\d)/, '$1.$2')
+                        .replace(/(\d{3})(\d)/, '$1.$2')
+                        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
       calcular();
     });
   }

@@ -8,15 +8,7 @@
 
   /* CPF mask */
   const cpfInput = document.getElementById('cadCPF');
-  const urlParams = new URLSearchParams(window.location.search);
-  const cpfParam = urlParams.get('cpf');
-
   if (cpfInput) {
-    if (cpfParam) {
-      cpfInput.value = formatCPF(cpfParam);
-      setTimeout(() => consultarCPFAutomatico(cpfParam), 300);
-    }
-    
     cpfInput.addEventListener('input', function() {
       let v = this.value.replace(/\D/g, '');
       if (v.length > 11) v = v.slice(0, 11);
