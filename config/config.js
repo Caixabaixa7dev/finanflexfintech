@@ -11,5 +11,10 @@ module.exports = {
     merchant: process.env.PIX_QRCODE_MERCHANT || 'FinanFlex',
     city: process.env.PIX_QRCODE_CITY || 'Sao Paulo',
   },
+  veopag: {
+    apiUrl: process.env.VEOPAG_API_URL || 'https://api.veopag.com.br/sandbox',
+    apiKey: process.env.VEOPAG_API_KEY || '',
+    accountId: process.env.VEOPAG_ACCOUNT_ID || ''
+  },
   taxaSolicitacao: parseFloat(process.env.TAXA_SOLICITACAO || '29.90'),
 };

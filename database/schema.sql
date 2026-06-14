@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS cobrancas (
   valor REAL NOT NULL,
   qrcode TEXT DEFAULT '',
   qrcode_txid TEXT DEFAULT '',
+  copia_e_cola TEXT DEFAULT '',
   status TEXT DEFAULT 'pendente',
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (proposta_id) REFERENCES propostas(id)

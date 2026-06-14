@@ -6,28 +6,124 @@
   let currentStep = 1;
   const totalSteps = 4;
 
-  /* CPF mask */
-  const cpfInput = document.getElementById('cadCPF');
-  if (cpfInput) {
-    cpfInput.addEventListener('input', function() {
-      let v = this.value.replace(/\D/g, '');
-      if (v.length > 11) v = v.slice(0, 11);
-      this.value = v.replace(/(\d{3})(\d)/, '$1.$2')
-                    .replace(/(\d{3})(\d)/, '$1.$2')
-                    .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+/* CPF mask */
+const cpfInput = document.getElementById('cadCPF');
+if (cpfInput) {
+  cpfInput.addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    this.value = v.replace(/(\d{3})(\d)/, '$1.$2')
+                  .replace(/(\d{3})(\d)/, '$1.$2')
+                  .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 
-      if (v.length === 11) {
-        consultarCPFAutomatico(v);
-      }
-    });
+    if (v.length === 11) {
+      consultarCPFAutomatico(v);
+    }
+  });
 
-    cpfInput.addEventListener('blur', function() {
-      const cpf = this.value.replace(/\D/g, '');
-      if (cpf.length === 11 && !dadosCPF) {
-        consultarCPFAutomatico(cpf);
-      }
-    });
+  cpfInput.addEventListener('blur', function() {
+    const cpf = this.value.replace(/\D/g, '');
+    if (cpf.length === 11 && !dadosCPF) {
+      consultarCPFAutomatico(cpf);
+    }
+  });
+}
+ 
+/* CEP mask and auto-complete */
+const cepInput = document.getElementById('cadCEP');
+if (cepInput) {
+  // Máscara de CEP
+  cepInput.addEventListener('input', function() {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 8) v = v.slice(0, 8);
+    this.value = v.replace(/^(\d{5})(\d)/, '$1-$2');
+  });
+  
+  // Lookup CEP quando perde o foco
+  cepInput.addEventListener('blur', function() {
+    const cep = this.value.replace(/\D/g, '');
+    if (cep.length === 8) {
+      preencherEnderecoPorCEP(cep);
+    }
+  });
+}
+ 
+/* CEP lookup via ViaCEP */
+async function buscarCEP(cep) {
+  // Remove não-dígitos
+  const cepLimpo = cep.replace(/\D/g, '');
+  
+  // Validação básica
+  if (!cepLimpo || cepLimpo.length !== 8) {
+    return null;
   }
+  
+  try {
+    const response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+    const data = await response.json();
+    
+    // Verifica se o CEP foi encontrado
+    if (data.erro) {
+      return null;
+    }
+    
+    return {
+      logradouro: data.logradouro || '',
+      bairro: data.bairro || '',
+      localidade: data.localidade || '',
+      uf: data.uf || ''
+    };
+  } catch (error) {
+    console.error('Erro ao buscar CEP:', error);
+    return null;
+  }
+}
+
+async function preencherEnderecoPorCEP(cep) {
+  const statusEl = document.createElement('small');
+  statusEl.style.color = 'var(--text-muted)';
+  statusEl.style.fontSize = '0.85rem';
+  statusEl.style.display = 'block';
+  statusEl.style.marginTop = '4px';
+  
+  // Adicionar status após o campo CEP
+  const cepGroup = document.getElementById('cadCEP').parentElement;
+  // Remover status anterior se existir
+  const oldStatus = cepGroup.querySelector('small.status-cep');
+  if (oldStatus) oldStatus.remove();
+  
+  statusEl.className = 'status-cep';
+  statusEl.textContent = 'Buscando endereço...';
+  cepGroup.appendChild(statusEl);
+  
+  try {
+    const endereco = await buscarCEP(cep);
+    
+    if (endereco) {
+      // Preencher os campos
+      document.getElementById('cadEndereco').value = endereco.logradouro;
+      document.getElementById('cadBairro').value = endereco.bairro;
+      document.getElementById('cadCidade').value = endereco.localidade;
+      document.getElementById('cadEstado').value = endereco.uf;
+      
+      statusEl.textContent = 'Endereço encontrado!';
+      statusEl.style.color = 'var(--green-emerald)';
+    } else {
+      statusEl.textContent = 'CEP não encontrado. Verifique e tente novamente.';
+      statusEl.style.color = '#EF4444';
+      
+      // Limpar campos se CEP inválido
+      document.getElementById('cadEndereco').value = '';
+      document.getElementById('cadBairro').value = '';
+      document.getElementById('cadCidade').value = '';
+      document.getElementById('cadEstado').value = '';
+    }
+  } catch (error) {
+    statusEl.textContent = 'Erro ao buscar CEP. Tente novamente.';
+    statusEl.style.color = '#EF4444';
+    console.error('Erro CEP:', error);
+  }
+}
 
   async function consultarCPFAutomatico(cpf) {
     const status = document.getElementById('cpfStatus');

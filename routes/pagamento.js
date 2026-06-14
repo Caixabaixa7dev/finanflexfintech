@@ -1,29 +1,39 @@
 const express = require('express');
-const crypto = require('crypto');
+const axios = require('axios');
 const config = require('../config/config');
 const getDb = require('../database/database');
 
 const router = express.Router();
 
-function gerarQRCodePix(valor) {
-  const txid = crypto.randomBytes(12).toString('hex').toUpperCase().substring(0, 25);
-  const merchant = config.pix.merchant;
-  const key = config.pix.key;
-  const city = config.pix.city;
-  const valorStr = valor.toFixed(2);
-
-  const payload = [
-    '000201', '010212',
-    '26360014BR.GOV.BCB.PIX0144' + key + '0204' + txid.substring(0, 4),
-    '52040000', '5303986',
-    '54' + valorStr.length.toString().padStart(2, '0') + valorStr,
-    '5802BR',
-    '59' + merchant.length.toString().padStart(2, '0') + merchant,
-    '60' + city.length.toString().padStart(2, '0') + city,
-    '62070503***', '6304'
-  ].join('');
-
-  return { qrcode: payload, txid };
+// Função para gerar QR Code Pix via Veopag
+async function gerarQRCodeVeopag(valor, txid) {
+  try {
+    const response = await axios.post(
+      `${config.veopag.apiUrl}/cobranca/pix`,
+      {
+        valor: valor.toFixed(2),
+        txid: txid || Math.random().toString(36).substring(2, 25), // TXID opcional
+        contaId: config.veopag.accountId
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${config.veopag.apiKey}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    // Assumindo que a API Veopag retorna esses campos (ajustar conforme documentação real)
+    return {
+      qrcode: response.data.qrCode || response.data.payload || '', // Código QR em formato texto
+      qrcodeBase64: response.data.qrCodeBase64 || null, // Se disponível
+      txid: response.data.txid || '',
+      copiaECola: response.data.copiaECola || response.data.code || '' // Código para copia e cola
+    };
+  } catch (error) {
+    console.error('Erro Veopag:', error.response?.data?.message || error.message);
+    throw new Error(`Erro ao gerar QR Code Pix: ${error.response?.data?.message || error.message}`);
+  }
 }
 
 router.post('/gerar', async (req, res) => {
@@ -38,15 +48,20 @@ router.post('/gerar', async (req, res) => {
     const proposta = db.get('SELECT * FROM propostas WHERE id = ?', [proposta_id]);
     if (!proposta) return res.status(404).json({ error: 'Proposta não encontrada' });
 
-    const { qrcode, txid } = gerarQRCodePix(valor);
+    // Gerar QR Code via Veopag
+    const { qrcode, qrcodeBase64, txid, copiaECola } = await gerarQRCodeVeopag(valor);
 
-    db.run('INSERT INTO cobrancas (proposta_id, valor, qrcode, qrcode_txid, status) VALUES (?, ?, ?, ?, ?)',
-      [proposta_id, valor, qrcode, txid, 'pendente']);
+    db.run('INSERT INTO cobrancas (proposta_id, valor, qrcode, qrcode_txid, copia_e_cola, status) VALUES (?, ?, ?, ?, ?, ?)',
+      [proposta_id, valor, qrcode, txid, copiaECola, 'pendente']);
 
     const cobranca = db.get('SELECT * FROM cobrancas WHERE id = ?', [db.lastInsertRowid]);
 
-    res.status(201).json({ cobranca });
+    res.status(201).json({ 
+      cobranca,
+      qrcodeBase64 // Para exibição imediata no frontend se necessário
+    });
   } catch (err) {
+    console.error('Erro Veopag:', err);
     res.status(500).json({ error: err.message });
   }
 });
