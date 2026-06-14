@@ -298,6 +298,27 @@ textarea:focus {
     padding-top: 80px; /* Compensar header fixo */
     position: relative;
     overflow: hidden;
+    background-image: url('/assets/BANNER1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #0A1A2F; /* Fallback color */
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* Darker overlay for better text contrast */
+    z-index: 1;
+}
+
+.hero > .container {
+    position: relative;
+    z-index: 2;
 }
 
 .hero-content {
@@ -309,6 +330,46 @@ textarea:focus {
 .hero-text {
     flex: 0 0 60%;
     max-width: 500px;
+    color: white;
+}
+
+.hero-text h1,
+.hero-text p,
+.hero-text a {
+    color: inherit;
+}
+
+.hero-illustration {
+    flex: 0 0 40%;
+}
+
+.hero .hero-title {
+    color: white;
+}
+
+.hero .hero-subtitle {
+    color: white;
+    opacity: 0.9;
+}
+
+.hero .cta-button {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.hero .cta-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.hero .cta-button:active {
+    transform: scale(0.97);
+}
+
+.hero .cta-button:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
 }
 
 .hero-title {
