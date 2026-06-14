@@ -17,7 +17,9 @@
     <!-- Header simples -->
     <header class="header">
         <div class="container header-content">
-            <a href="#" class="logo">Empréstimo<span class="logo-accent">Fi</span></a>
+            <a href="#" class="logo">
+                <img src="assets/logo.png" alt="Empréstimo Financeiro" class="logo-img">
+            </a>
             <button class="menu-toggle" aria-label="Abrir menu" aria-controls="mobile-menu" aria-expanded="false">
                 <span class="hamburger"></span>
             </button>
@@ -51,55 +53,12 @@
                 <p class="hero-subtitle">
                     Taxas justas, aprovação ágil e acompanhamento personalizado para seus projetos mais importantes.
                 </p>
-                <a href="#beneficios" class="cta-button">Como funciona</a>
+                <a href="#simulador" class="cta-button">Simular seu empréstimo</a>
             </div>
             
-            <!-- Ilustração abstrata (lado direito, fluxo vertical) -->
+            <!-- Banner image in hero section -->
             <div class="hero-illustration">
-                <svg width="300" height="500" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Linha principal que "sai" do título e flui verticalmente -->
-                    <path d="M50,50 
-                             C100,100 150,150 200,200
-                             C250,250 250,300 250,350
-                             C250,400 200,450 150,480
-                             C100,510 50,500 50,480"
-                          fill="none"
-                          stroke="#0A1A2F"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round">
-                        <animate attributeName="stroke-dasharray" 
-                                 values="0 200;200 0" 
-                                 dur="2s" 
-                                 repeatCount="indefinite"/>
-                    </path>
-                    
-                    <!-- Pontos de conexão (nós) -->
-                    <circle cx="100" cy="100" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="150" cy="150" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="200" cy="200" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="250" cy="250" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="250" cy="300" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="250" cy="350" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="200" cy="400" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="150" cy="450" r="4" fill="#2ECC71" opacity="0.15"/>
-                    <circle cx="100" cy="480" r="4" fill="#2ECC71" opacity="0.15"/>
-                    
-                    <!-- Elementos orgânicos adicionais -->
-                    <path d="M180,220 
-                             C190,240 210,240 220,220"
-                          fill="none"
-                          stroke="#0A1A2F"
-                          stroke-width="1"
-                          opacity="0.6"/>
-                          
-                    <path d="M120,380 
-                             C110,400 90,400 80,380"
-                          fill="none"
-                          stroke="#0A1A2F"
-                          stroke-width="1"
-                          opacity="0.6"/>
-                </svg>
+                <img src="assets/BANNER1.png" alt="Pessoa sorrindo segurando smartphone com notificação de aprovação de empréstimo" class="hero-banner-img">
             </div>
         </div>
     </section>
@@ -108,6 +67,9 @@
     <section id="beneficios" class="beneficios">
         <div class="container">
             <h2 class="section-title">Por que escolher nós</h2>
+            <div class="beneficios-banner">
+                <img src="assets/BANNER2.png" alt="Benefícios do nosso empréstimo: taxas justas, aprovação rápida e atendimento personalizado" class="beneficios-banner-img">
+            </div>
             <div class="beneficios-grid">
                 <!-- Card grande central (sobrepondo ligeiramente) -->
                 <div class="benefit-card benefit-card--large">
@@ -337,95 +299,52 @@
             <div class="testimonial-flow">
                 <!-- Depoimento 1 -->
                 <blockquote class="testimonial">
-                    <p class="testimonial-text">
-                        "Finalmente encontrei uma financeira que entende minhas necessidades. O processo foi transparente desde o início e as condições foram exatamente como prometido."
-                    </p>
-                    <cite class="testimonial-author">— Maria S., empresária</cite>
-                    <div class="testimonial-illustration">
-                        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20,20 
-                                     Q40,10 60,20 
-                                     Q70,30 70,50 
-                                     Q60,70 40,60 
-                                     Q20,70 10,50 
-                                     Q10,30 20,20 Z"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1.5"/>
-                            <circle cx="40" cy="40" r="12" fill="#E8E4D9"/>
-                            <path d="M30,40 
-                                     L50,40"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1"/>
-                            <path d="M40,30 
-                                     L40,50"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1"/>
-                        </svg>
+                    <div class="testimonial-content">
+                        <div class="testimonial-avatar">
+                            <div class="placeholder-image testimonial-placeholder">
+                                <div class="placeholder-content">[FOTO: Maria S., empresária]</div>
+                            </div>
+                        </div>
+                        <div class="testimonial-text-wrapper">
+                            <p class="testimonial-text">
+                                "Finalmente encontrei uma financeira que entende minhas necessidades. O processo foi transparente desde o início e as condições foram exatamente como prometido."
+                            </p>
+                            <cite class="testimonial-author">— Maria S., empresária</cite>
+                        </div>
                     </div>
                 </blockquote>
                 
                 <!-- Depoimento 2 -->
                 <blockquote class="testimonial">
-                    <p class="testimonial-text">
-                        "As taxas foram claramente explicadas e não houve surpresas. Recomendo para quem busca segurança e transparência em operações de crédito."
-                    </p>
-                    <cite class="testimonial-author">— João P., desenvolvedor</cite>
-                    <div class="testimonial-illustration">
-                        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20,60 
-                                     L60,20 
-                                     L100,60"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="2"/>
-                            <path d="M40,40 
-                                     L80,40"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1"
-                                  opacity="0.7"/>
-                            <path d="M60,20 
-                                     L60,60"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1"
-                                  opacity="0.5"/>
-                            <circle cx="50" cy="40" r="6" fill="#2ECC71" opacity="0.2"/>
-                        </svg>
+                    <div class="testimonial-content">
+                        <div class="testimonial-avatar">
+                            <div class="placeholder-image testimonial-placeholder">
+                                <div class="placeholder-content">[FOTO: João P., desenvolvedor]</div>
+                            </div>
+                        </div>
+                        <div class="testimonial-text-wrapper">
+                            <p class="testimonial-text">
+                                "As taxas foram claramente explicadas e não houve surpresas. Recomendo para quem busca segurança e transparência em operações de crédito."
+                            </p>
+                            <cite class="testimonial-author">— João P., desenvolvedor</cite>
+                        </div>
                     </div>
                 </blockquote>
                 
                 <!-- Depoimento 3 -->
                 <blockquote class="testimonial">
-                    <p class="testimonial-text">
-                        "O atendimento personalizado fez toda a diferença. Meu consultor entendeu exatamente o que eu precisou e encontrou a melhor solução para meu caso específico."
-                    </p>
-                    <cite class="testimonial-author">— Ana T., professora</cite>
-                    <div class="testimonial-illustration">
-                        <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg>
-                            <path d="M40,20 
-                                     Q20,40 40,60 
-                                     Q60,40 40,20 Z"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1.5"/>
-                            <circle cx="40" cy="40" r="10" fill="#E8E4D9"/>
-                            <path d="M30,40 
-                                     L50,40"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1"/>
-                            <path d="M40,30 
-                                     L40,50"
-                                  fill="none"
-                                  stroke="#0A1A2F"
-                                  stroke-width="1"/>
-                            <circle cx="35" cy="35" r="3" fill="#2ECC71"/>
-                            <circle cx="45" cy="45" r="3" fill="#2ECC71"/>
-                        </svg>
+                    <div class="testimonial-content">
+                        <div class="testimonial-avatar">
+                            <div class="placeholder-image testimonial-placeholder">
+                                <div class="placeholder-content">[FOTO: Ana T., professora]</div>
+                            </div>
+                        </div>
+                        <div class="testimonial-text-wrapper">
+                            <p class="testimonial-text">
+                                "O atendimento personalizado fez toda a diferença. Meu consultor entendeu exatamente o que eu precisou e encontrou a melhor solução para meu caso específico."
+                            </p>
+                            <cite class="testimonial-author">— Ana T., professora</cite>
+                        </div>
                     </div>
                 </blockquote>
             </div>
@@ -678,11 +597,11 @@
 
         // Handle proceed button
         prosseguirBtn.addEventListener('click', function() {
-            // In a real application, this would navigate to a registration form
-            // pre-filled with the simulation values
-            alert('Próximo passo: Redirecionando para o cadastro com os valores da simulação pré-preenchidos!\n\nValor: R$ ' + valorInput.value + '\nPrazo: ' + prazoInput.value + ' meses');
-            // For now, just show an alert
-            // In reality, you might scroll to a registration section or show a modal
+            // Navigate to cadastro page with simulation values as query parameters
+            // In a real app, you might use localStorage, context API, or state management
+            const valor = valorInput.value;
+            const prazo = prazoInput.value;
+            window.location.href = `/pages/cadastro.html?valor=${valor}&prazo=${prazo}`;
         });
     </script>
     

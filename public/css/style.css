@@ -95,18 +95,12 @@ textarea:focus {
 }
 
 .logo {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: #0A1A2F;
-    text-decoration: none;
-    padding: 8px 12px; /* Added padding for better touch target */
     display: inline-block;
-    line-height: 1.2;
+    padding: 8px 12px; /* Added padding for better touch target */
     transition: all 0.15s ease;
 }
 
 .logo:hover {
-    color: #0A1A2F;
     opacity: 0.9;
 }
 
@@ -117,6 +111,13 @@ textarea:focus {
 .logo:focus-visible {
     outline: 2px solid #2ECC71;
     outline-offset: 2px;
+}
+
+/* Logo image specific styling */
+.logo-img {
+    height: 48px;
+    width: auto;
+    display: block;
 }
 
 .logo-accent {
@@ -384,10 +385,16 @@ textarea:focus {
     padding-top: 2rem;
 }
 
-.hero-illustration svg {
+.hero-illustration svg,
+.hero-illustration .hero-banner-img {
     width: 100%;
     max-width: 300px;
     height: auto;
+    border-radius: 8px;
+}
+
+.hero-illustration .hero-banner-img {
+    display: block;
 }
 
 /* Seção de Benefícios */
@@ -415,6 +422,21 @@ textarea:focus {
     color: #0A1A2F;
 }
 
+/* Benefits banner */
+.beneficios-banner {
+    margin: 2rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+}
+
+.beneficios-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Seção de Benefícios */
 .beneficios-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -544,10 +566,12 @@ textarea:focus {
         margin-top: 1.5rem;
     }
     
-    .hero-illustration svg {
-        max-width: 180px; /* Further reduced size for mobile */
-        height: auto;
-    }
+.hero-illustration .placeholder-image,
+.hero-illustration svg {
+    max-width: 180px; /* Further reduced size for mobile */
+    width: 100%;
+    height: auto;
+}
     
     .header {
         padding: 15px 0;
@@ -885,6 +909,75 @@ textarea:focus {
     outline-offset: 2px;
 }
 
+/* Placeholder images and logo styling */
+.logo-img {
+    height: 48px;
+    width: auto;
+    display: block;
+}
+
+.placeholder-image {
+    background-color: #F5F5F5;
+    border: 1px dashed #E8E4D9;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0A1A2F;
+    font-size: 0.875rem;
+    min-height: 40px;
+}
+
+.placeholder-image.smaller {
+    min-height: 30px;
+}
+
+.placeholder-content {
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Hero specific placeholder */
+.hero-placeholder {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    border-radius: 12px;
+}
+
+.hero-placeholder .placeholder-content {
+    font-size: 0.9rem;
+}
+
+/* Testimonial specific placeholder */
+.testimonial-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #E8E4D9;
+    flex-shrink: 0;
+}
+
+.testimonial-placeholder .placeholder-content {
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+/* Testimonial content layout */
+.testimonial-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.testimonial-avatar {
+    flex-shrink: 0;
+}
+
+.testimonial-text-wrapper {
+    flex: 1;
+}
+
 /* Seção de Depoimentos */
 .depoimentos {
     padding: 80px 0;
@@ -1084,6 +1177,16 @@ textarea:focus {
     .process-flow,
     .testimonial-flow {
         grid-template-columns: 1fr;
+    }
+    
+    /* Stack testimonial avatar and text on mobile */
+    .testimonial-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .testimonial-avatar {
+        margin-bottom: 1rem;
     }
     
     .simulador,
