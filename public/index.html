@@ -342,9 +342,7 @@
                 <blockquote class="testimonial">
                     <div class="testimonial-content">
                         <div class="testimonial-avatar">
-                            <div class="placeholder-image testimonial-placeholder">
-                                <div class="placeholder-content">[FOTO: Ana T., professora]</div>
-                            </div>
+                            <img src="assets/foto3.jpg" alt="Ana T., professora" class="testimonial-img">
                         </div>
                         <div class="testimonial-text-wrapper">
                             <p class="testimonial-text">
@@ -528,36 +526,14 @@
 
         // Handle CPF input
         cpfInput.addEventListener('input', function() {
-            // Format CPF as user types (optional)
-            let value = this.value.replace(/\D/g, '');
-            if (value.length > 11) {
-                value = value.substring(0, 11);
-            }
-            
-            // Add formatting: XXX.XXX.XXX-XX
-            if (value.length > 0) {
-                const part1 = value.substring(0, 3);
-                const part2 = value.substring(3, 6);
-                const part3 = value.substring(6, 9);
-                const part4 = value.substring(9, 11);
-                
-                if (value.length > 9) {
-                    this.value = `${part1}.${part2}.${part3}-${part4}`;
-                } else if (value.length > 6) {
-                    this.value = `${part1}.${part2}.${part3}-${part4.substring(0, value.length - 9)}`;
-                } else if (value.length > 3) {
-                    this.value = `${part1}.${part2}.${part3.substring(0, value.length - 3)}`;
-                } else {
-                    this.value = part1;
-                }
-            } else {
-                this.value = '';
-            }
-            
-            // If we have 11 digits (unformatted), check API
-            const cleanCpf = this.value.replace(/\D/g, '');
-            if (cleanCpf.length === 11) {
-                realCpfApi(cleanCpf).then(data => {
+            let v = this.value.replace(/\D/g, '');
+            if (v.length > 11) v = v.slice(0, 11);
+            this.value = v.replace(/(\d{3})(\d)/, ''$1.$2'')
+                        .replace(/(\d{3})(\d)/, ''$1.$2'')
+                        .replace(/(\d{3})(\d{1,2})$/, ''$1-$2'')
+
+            if (v.length === 11) {
+                realCpfApi(v).then(data => {
                     if (data) {
                         // Display client data in score section
                         rendaValor.textContent = `R$ ${data.renda.toFixed(2)}`;
@@ -567,7 +543,7 @@
                             scoreValor.textContent = '--';
                         }
                         scoreSection.style.display = 'block';
-                        scoreTexto.textContent = "CPF v√°lido! Dados do cliente identificados.";
+                        scoreTexto.textContent = 'CPF v·lido! Dados do cliente identificados.';
                     } else {
                         scoreSection.style.display = 'none';
                     }
@@ -576,7 +552,6 @@
                 scoreSection.style.display = 'none';
             }
         });
-
         // Calculate loan payment
         function calcularParcela(valor, prazoMensal, taxaMensal) {
             // Formula: P = (r * PV) / (1 - (1 + r)^-n)
@@ -638,3 +613,4 @@
     </main>
 </body>
 </html>
+
