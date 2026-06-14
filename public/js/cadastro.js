@@ -272,4 +272,15 @@
 
   /* Init */
   updateSteps();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const cpfParam = urlParams.get('cpf');
+  if (cpfParam && cpfParam.length === 11) {
+    const formatted = cpfParam.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    const cpfInputEl = document.getElementById('cadCPF');
+    if (cpfInputEl) {
+      cpfInputEl.value = formatted;
+      consultarCPFAutomatico(cpfParam);
+    }
+  }
 })();

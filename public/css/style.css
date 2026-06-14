@@ -195,13 +195,15 @@ textarea:focus {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 12px; /* Increased touch target */
-    width: 48px; /* Minimum touch target size */
-    height: 48px;`n    margin-right: 12px;
+    padding: 12px;
+    width: 48px;
+    height: 48px;
+    margin-right: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s ease;`n    z-index: 1100;`n    margin-right: 12px;`n    z-index: 1100;
+    transition: all 0.15s ease;
+    z-index: 1100;
 }
 
 .menu-toggle:active {

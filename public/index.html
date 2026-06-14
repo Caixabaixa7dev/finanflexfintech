@@ -308,15 +308,13 @@
                 <blockquote class="testimonial">
                     <div class="testimonial-content">
                         <div class="testimonial-avatar">
-                            <div class="placeholder-image testimonial-placeholder">
-                                <div class="placeholder-content">[FOTO: Maria S., empresária]</div>
-                            </div>
+                            <img src="assets/foto1.jpg" alt="Maria S., empres�ria" class="testimonial-img">
                         </div>
                         <div class="testimonial-text-wrapper">
                             <p class="testimonial-text">
                                 "Finalmente encontrei uma financeira que entende minhas necessidades. O processo foi transparente desde o início e as condições foram exatamente como prometido."
                             </p>
-                            <cite class="testimonial-author">— Maria S., empresária</cite>
+                            <cite class="testimonial-author">- Maria S., empres�ria</cite>
                         </div>
                     </div>
                 </blockquote>
@@ -325,15 +323,13 @@
                 <blockquote class="testimonial">
                     <div class="testimonial-content">
                         <div class="testimonial-avatar">
-                            <div class="placeholder-image testimonial-placeholder">
-                                <div class="placeholder-content">[FOTO: João P., desenvolvedor]</div>
-                            </div>
+                            <img src="assets/foto2.jpg" alt="Jo�o P., aut�nomo" class="testimonial-img">
                         </div>
                         <div class="testimonial-text-wrapper">
                             <p class="testimonial-text">
                                 "As taxas foram claramente explicadas e não houve surpresas. Recomendo para quem busca segurança e transparência em operações de crédito."
                             </p>
-                            <cite class="testimonial-author">— João P., desenvolvedor</cite>
+                            <cite class="testimonial-author">- Jo�o P., aut�nomo</cite>
                         </div>
                     </div>
                 </blockquote>
@@ -341,14 +337,12 @@
                 <!-- Depoimento 3 -->
                 <blockquote class="testimonial">
                     <div class="testimonial-content">
-                        <div class="testimonial-avatar">
-                            <img src="assets/foto3.jpg" alt="Ana T., professora" class="testimonial-img">
-                        </div>
+                        <div class="testimonial-avatar"><img src="assets/foto3.jpg" alt="Ana L., contadora" class="testimonial-img"></div>
                         <div class="testimonial-text-wrapper">
                             <p class="testimonial-text">
                                 "O atendimento personalizado fez toda a diferença. Meu consultor entendeu exatamente o que eu precisou e encontrou a melhor solução para meu caso específico."
                             </p>
-                            <cite class="testimonial-author">— Ana T., professora</cite>
+                            <cite class="testimonial-author">- Ana L., contadora</cite>
                         </div>
                     </div>
                 </blockquote>
@@ -552,7 +546,7 @@
             } else {
                 scoreSection.style.display = 'none';
             }
-        };
+        });
         // Calculate loan payment
         function calcularParcela(valor, prazoMensal, taxaMensal) {
             // Formula: P = (r * PV) / (1 - (1 + r)^-n)
@@ -607,13 +601,30 @@
             // In a real app, you might use localStorage, context API, or state management
             const valor = valorInput.value;
             const parcelas = prazoInput.value; // Changed variable name for clarity
-            window.location.href = `/pages/cadastro.html?valor=${valor}&parcelas=${parcelas}`;
+            const cpf = cpfInput.value.replace(/\D/g, '');
+            let url = `/pages/cadastro.html?valor=${valorInput.value}&parcelas=${prazoInput.value}`;
+            if (cpf.length === 11) {
+                url += `&cpf=${cpf}`;
+            }
+            window.location.href = url;
         });
     </script>
     
     </main>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
