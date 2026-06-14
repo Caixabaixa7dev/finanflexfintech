@@ -1,3 +1,32 @@
+:root {
+    --bg: #F8F9FA;
+    --bg-deep: #0A1A2F;
+    --bg-white: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 4px;
+    --radius-sm: 2px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --border: #E8E4D9;
+    --border-light-mode: #E8E4D9;
+    --border-light: #FFFFFF;
+    --transition: 0.2s ease;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --text-dark: #0A1A2F;
+    --text-dark-secondary: #6B7280;
+    --text-muted: #6B7280;
+    --text-primary: #0A1A2F;
+    --accent: #2ECC71;
+    --accent-hover: #1E8449;
+    --accent-subtle: rgba(46,204,113,0.1);
+    --danger: #EF4444;
+    --warning: #F59E0B;
+}
 /* Reset básico */
 * {
     margin: 0;
@@ -1322,3 +1351,33 @@ textarea:focus {
         display: none !important;
     }
 }
+:root {
+    --bg: #F8F9FA;
+    --bg-deep: #0A1A2F;
+    --bg-white: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'Outfit', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius: 4px;
+    --radius-sm: 2px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --border: #E8E4D9;
+    --border-light-mode: #E8E4D9;
+    --border-light: #FFFFFF;
+    --transition: 0.2s ease;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --text-dark: #0A1A2F;
+    --text-dark-secondary: #6B7280;
+    --text-muted: #6B7280;
+    --text-primary: #0A1A2F;
+    --accent: #2ECC71;
+    --accent-hover: #1E8449;
+    --accent-subtle: rgba(46,204,113,0.1);
+    --danger: #EF4444;
+    --warning: #F59E0B;
+}
+
