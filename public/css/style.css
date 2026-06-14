@@ -197,11 +197,11 @@ textarea:focus {
     cursor: pointer;
     padding: 12px; /* Increased touch target */
     width: 48px; /* Minimum touch target size */
-    height: 48px;
+    height: 48px;`n    margin-right: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s ease;
+    transition: all 0.15s ease;`n    z-index: 1100;
 }
 
 .menu-toggle:active {
@@ -1389,4 +1389,6 @@ textarea:focus {
     object-fit: cover;
     border: 2px solid #E8E4D9;
 }
+
+
 
