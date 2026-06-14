@@ -529,15 +529,15 @@
         cpfInput.addEventListener('input', function() {
             let v = this.value.replace(/\D/g, '');
             if (v.length > 11) v = v.slice(0, 11);
-            this.value = v.replace(/(\d{3})(\d)/, '.')
-                        .replace(/(\d{3})(\d)/, '.')
-                        .replace(/(\d{3})(\d{1,2})$/, '-');
+            this.value = v.replace(/(\d{3})(\d)/, '$1.$2')
+                        .replace(/(\d{3})(\d)/, '$1.$2')
+                        .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
 
             if (v.length === 11) {
                 realCpfApi(v).then(data => {
                     if (data) {
                         // Display client data in score section
-                        rendaValor.textContent = R$ ;
+                        rendaValor.textContent = `R$ ${data.renda.toFixed(2)}`;
                         if (data.nome) {
                             scoreValor.textContent = data.nome;
                         } else {
@@ -552,8 +552,8 @@
             } else {
                 scoreSection.style.display = 'none';
             }
-        });
-// Calculate loan payment
+        };
+        // Calculate loan payment
         function calcularParcela(valor, prazoMensal, taxaMensal) {
             // Formula: P = (r * PV) / (1 - (1 + r)^-n)
             const r = taxaMensal;
@@ -614,6 +614,10 @@
     </main>
 </body>
 </html>
+
+
+
+
 
 
 

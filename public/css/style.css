@@ -201,7 +201,7 @@ textarea:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.15s ease;`n    z-index: 1100;
+    transition: all 0.15s ease;`n    z-index: 1100;`n    margin-right: 12px;`n    z-index: 1100;
 }
 
 .menu-toggle:active {
@@ -1389,6 +1389,7 @@ textarea:focus {
     object-fit: cover;
     border: 2px solid #E8E4D9;
 }
+
 
 
 
