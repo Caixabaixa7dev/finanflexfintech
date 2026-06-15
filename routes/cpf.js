@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
 
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 5000);
 
     const response = await fetch(`${config.cpfApiUrl}/${cpfLimpo}`, {
       signal: controller.signal
@@ -20,14 +20,15 @@ router.post('/', async (req, res) => {
     clearTimeout(timeout);
 
     if (!response.ok) {
+      console.log('API de CPF retornou erro');
       return res.status(404).json({ error: 'CPF não encontrado na base' });
     }
 
     const data = await response.json();
     res.json(data);
   } catch (err) {
-    console.error('Erro consulta CPF:', err.message);
-    res.status(502).json({ error: 'Erro ao consultar CPF, tente novamente' });
+    console.error('Erro consulta CPF (API fora do ar?):', err.message);
+    res.status(502).json({ error: 'Erro ao consultar CPF, preencha manualmente' });
   }
 });
 

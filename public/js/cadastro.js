@@ -87,7 +87,12 @@ async function preencherEnderecoPorCEP(cep) {
   statusEl.style.marginTop = '4px';
   
   // Adicionar status após o campo CEP
-  const cepGroup = document.getElementById('cadCEP').parentElement;
+  const cepInput = document.getElementById('cadCEP');
+  if (!cepInput) return; // Safety check
+  
+  const cepGroup = cepInput.parentElement;
+  if (!cepGroup) return; // Safety check
+  
   // Remover status anterior se existir
   const oldStatus = cepGroup.querySelector('small.status-cep');
   if (oldStatus) oldStatus.remove();
@@ -101,10 +106,15 @@ async function preencherEnderecoPorCEP(cep) {
     
     if (endereco) {
       // Preencher os campos
-      document.getElementById('cadEndereco').value = endereco.logradouro;
-      document.getElementById('cadBairro').value = endereco.bairro;
-      document.getElementById('cadCidade').value = endereco.localidade;
-      document.getElementById('cadEstado').value = endereco.uf;
+      const enderecoInput = document.getElementById('cadEndereco');
+      const bairroInput = document.getElementById('cadBairro');
+      const cidadeInput = document.getElementById('cadCidade');
+      const estadoInput = document.getElementById('cadEstado');
+      
+      if (enderecoInput) enderecoInput.value = endereco.logradouro;
+      if (bairroInput) bairroInput.value = endereco.bairro;
+      if (cidadeInput) cidadeInput.value = endereco.localidade;
+      if (estadoInput) estadoInput.value = endereco.uf;
       
       statusEl.textContent = 'Endereço encontrado!';
       statusEl.style.color = 'var(--green-emerald)';
@@ -113,10 +123,15 @@ async function preencherEnderecoPorCEP(cep) {
       statusEl.style.color = '#EF4444';
       
       // Limpar campos se CEP inválido
-      document.getElementById('cadEndereco').value = '';
-      document.getElementById('cadBairro').value = '';
-      document.getElementById('cadCidade').value = '';
-      document.getElementById('cadEstado').value = '';
+      const enderecoInput = document.getElementById('cadEndereco');
+      const bairroInput = document.getElementById('cadBairro');
+      const cidadeInput = document.getElementById('cadCidade');
+      const estadoInput = document.getElementById('cadEstado');
+      
+      if (enderecoInput) enderecoInput.value = '';
+      if (bairroInput) bairroInput.value = '';
+      if (cidadeInput) cidadeInput.value = '';
+      if (estadoInput) estadoInput.value = '';
     }
   } catch (error) {
     statusEl.textContent = 'Erro ao buscar CEP. Tente novamente.';
@@ -177,13 +192,13 @@ async function preencherEnderecoPorCEP(cep) {
     }
   }
 
-  window.nextStep = function(step) {
-    if (step === 2) {
-      const nome = document.getElementById('cadNome').value.trim();
-      const cpf = document.getElementById('cadCPF').value.replace(/\D/g, '');
-      if (!nome) { alert('Nome é obrigatório'); return; }
-      if (cpf.length !== 11) { alert('CPF inválido'); return; }
-    }
+   window.nextStep = function(step) {
+     if (step === 2) {
+       const nome = (document.getElementById('cadNome') || { value: '' }).value.trim();
+       const cpf = (document.getElementById('cadCPF') || { value: '' }).value.replace(/\D/g, '');
+       if (!nome) { alert('Nome é obrigatório'); return; }
+       if (cpf.length !== 11) { alert('CPF inválido'); return; }
+     }
 
     currentStep = step;
     updateSteps();
@@ -268,12 +283,12 @@ async function preencherEnderecoPorCEP(cep) {
       this.disabled = true;
       this.textContent = 'Enviando...';
 
-      const telRadios = document.querySelectorAll('input[name="telSugerido"]');
-      let celular = document.getElementById('cadCelular').value;
-      telRadios.forEach(r => { if (r.checked) celular = r.value.replace('|', ' '); });
+       const telRadios = document.querySelectorAll('input[name="telSugerido"]');
+       let celular = (document.getElementById('cadCelular') || { value: '' }).value;
+       telRadios.forEach(r => { if (r.checked) celular = r.value.replace('|', ' '); });
 
-      const pin = document.getElementById('cadPin').value;
-      const pinConfirm = document.getElementById('cadPinConfirm').value;
+       const pin = (document.getElementById('cadPin') || { value: '' }).value;
+       const pinConfirm = (document.getElementById('cadPinConfirm') || { value: '' }).value;
       const pinError = document.getElementById('pinError');
 
       if (!pin || pin.length < 4) {
@@ -292,10 +307,10 @@ async function preencherEnderecoPorCEP(cep) {
       }
       pinError.style.display = 'none';
 
-      const payload = {
-        nome: document.getElementById('cadNome').value.trim(),
-        cpf: document.getElementById('cadCPF').value.replace(/\D/g, ''),
-        email: document.getElementById('cadEmail').value.trim(),
+       const payload = {
+         nome: (document.getElementById('cadNome') || { value: '' }).value.trim(),
+         cpf: (document.getElementById('cadCPF') || { value: '' }).value.replace(/\D/g, ''),
+         email: (document.getElementById('cadEmail') || { value: '' }).value.trim(),
         celular: celular,
         data_nascimento: document.getElementById('cadNascimento').value,
         sexo: document.getElementById('cadSexo').value,
